@@ -1,4 +1,3 @@
-"use server";
 import { object, parse, string, url } from "valibot";
 
 const envSchema = object({

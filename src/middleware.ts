@@ -1,13 +1,16 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { paths } from "./lib/paths";
 import { createServerClient } from "./server/pocketBase";
 
-export async function middleware() {
-  const { authStore } = createServerClient(cookies());
+export async function middleware(request: NextRequest) {
+  const cookiesStore = cookies();
+  const { authStore } = createServerClient(cookiesStore);
 
   if (!authStore.isValid) {
-    return NextResponse.redirect(paths.signIn);
+    const origin = new URL(request.url).origin;
+    const redirect = `${origin}${paths.signIn}`;
+    return NextResponse.redirect(redirect);
   }
 }
 
@@ -23,6 +26,6 @@ export const config = {
      * - sign-up
      * - / (root path)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sign-in|sign-up|$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sign-in|sign-up|service-worker.js|$).*)",
   ],
 };
