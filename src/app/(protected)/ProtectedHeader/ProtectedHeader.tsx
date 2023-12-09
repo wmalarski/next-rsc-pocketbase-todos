@@ -1,5 +1,5 @@
+import { Link } from "@/components/Link/Link";
 import { paths } from "@/lib/paths";
-import Link from "next/link";
 
 export const ProtectedHeader = () => {
   return (
