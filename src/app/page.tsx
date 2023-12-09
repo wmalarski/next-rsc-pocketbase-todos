@@ -1,5 +1,8 @@
 import { Button } from "@/components/Button/Button";
+import { paths } from "@/lib/paths";
 import { css } from "@/styled-system/css";
+import Link from "next/link";
+import { Footer } from "./Footer/Footer";
 
 export default function Home() {
   return (
@@ -9,7 +12,11 @@ export default function Home() {
           Hello 🐼!
         </div>
         <Button>Click me</Button>
+        <Link href={paths.signIn}>Sign In</Link>
+        <Link href={paths.signUp}>Sign Up</Link>
+        <Link href={paths.list()}>Todo list</Link>
       </div>
+      <Footer />
     </main>
   );
 }
