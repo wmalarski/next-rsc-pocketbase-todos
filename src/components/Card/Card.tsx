@@ -1,3 +1,4 @@
+"use client";
 import { createStyleContext } from "@/lib/create-style-context";
 import { styled, type HTMLStyledProps } from "@/styled-system/jsx";
 import { card } from "@/styled-system/recipes";
