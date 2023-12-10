@@ -8,6 +8,7 @@ import {
   CheckCircleIcon,
   InfoIcon,
 } from "lucide-react";
+import { ReactNode } from "react";
 
 const { withProvider, withContext } = createStyleContext(alert);
 
@@ -52,8 +53,8 @@ const ICON_MAP = {
 };
 
 type BasicAlertProps = AlertProps & {
-  title: string;
-  description?: string;
+  title: ReactNode;
+  description?: ReactNode;
   icon: keyof typeof ICON_MAP;
 };
 

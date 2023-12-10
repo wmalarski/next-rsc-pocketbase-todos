@@ -18,7 +18,7 @@ export function createServerClient(cookieStore?: ReadonlyRequestCookies) {
     const authCookie = cookieStore.get(PB_COOKIE_NAME);
 
     if (authCookie) {
-      client.authStore.loadFromCookie(`${authCookie.name}=${authCookie.value}`);
+      client.authStore.loadFromCookie(authCookie.value);
     }
   }
 

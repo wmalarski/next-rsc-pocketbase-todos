@@ -11,8 +11,10 @@ import {
 } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
 import { Label } from "@/components/Label/Label";
+import { Link } from "@/components/Link/Link";
 import { signInAction } from "@/server/auth";
 import { Stack } from "@/styled-system/jsx";
+import { paths } from "@/utils/paths";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const SignInForm = () => {
@@ -29,8 +31,19 @@ export const SignInForm = () => {
         </CardHeader>
         <CardBody>
           <Stack gap="4">
-            {state.error ? (
+            {state?.error ? (
               <BasicAlert icon="error" title={state.error} />
+            ) : null}
+            {state?.success ? (
+              <BasicAlert
+                icon="success"
+                title="Sign up successful"
+                description={
+                  <Link href={paths.signIn} variant="link">
+                    Go to sign in
+                  </Link>
+                }
+              />
             ) : null}
             <Stack gap="1.5">
               <Label htmlFor="email">Email</Label>
@@ -42,7 +55,7 @@ export const SignInForm = () => {
                 placeholder="Email"
                 required
               />
-              {state.errors?.email ? (
+              {state?.errors?.email ? (
                 <BasicAlert icon="error" title={state.errors?.email.message} />
               ) : null}
             </Stack>
@@ -55,7 +68,7 @@ export const SignInForm = () => {
                 type="password"
                 required
               />
-              {state.errors?.password ? (
+              {state?.errors?.password ? (
                 <BasicAlert
                   icon="error"
                   title={state.errors.password.message}

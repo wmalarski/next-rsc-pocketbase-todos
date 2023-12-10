@@ -5,12 +5,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
 import { email, object, safeParseAsync, string } from "valibot";
+import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
 import {
   createRequestError,
   valibotResultToErrors,
   type FormReturn,
-} from "./errors";
-import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
+} from "./utils";
 
 const USERS_COLLECTION = "users";
 
@@ -50,6 +50,7 @@ export async function signInAction(
   }
 
   console.error("isSuccess", isSuccess);
+
   if (isSuccess) {
     redirect(paths.list());
   }
@@ -79,13 +80,12 @@ export async function signUpAction(
   const cookiesStore = cookies();
   const pb = createServerClient(cookiesStore);
 
-  let isSuccess = false;
-
   try {
     const createResponse = await pb.collection(USERS_COLLECTION).create({
       email: result.output.email,
       password: result.output.password,
       passwordConfirm: result.output.passwordConfirm,
+      username: result.output.email,
     });
 
     console.error("Response", createResponse);
@@ -96,17 +96,25 @@ export async function signUpAction(
 
     console.error("Response", verificationResponse);
 
-    isSuccess = true;
+    return { success: true };
   } catch (error) {
     if (error instanceof ClientResponseError) {
       return { errors: error.data.data };
     }
   }
 
-  console.error("isSuccess", isSuccess);
-  if (isSuccess) {
-    redirect(paths.list());
-  }
-
   return createRequestError();
+}
+
+export async function signOutAction(
+  _prevState: FormReturn,
+): Promise<FormReturn> {
+  const cookiesStore = cookies();
+
+  const pb = createServerClient(cookiesStore);
+  pb.authStore.clear();
+
+  cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+
+  redirect(paths.signIn);
 }

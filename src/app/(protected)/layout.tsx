@@ -1,18 +1,27 @@
 import { Link } from "@/components/Link/Link";
+import { flex } from "@/styled-system/patterns";
 import { paths } from "@/utils/paths";
 import type { ReactNode } from "react";
 import { Footer } from "../Footer/Footer";
+import { SignOutForm } from "./SignOutForm";
 
 const ProtectedHeader = () => {
   return (
     <header>
       <nav>
-        <ul>
+        <ul className={flex({ gap: "2" })}>
           <li>
-            <Link href={paths.home}>Home</Link>
+            <Link href={paths.home} variant="link">
+              Home
+            </Link>
           </li>
           <li>
-            <Link href={paths.list()}>Todo list</Link>
+            <Link href={paths.list()} variant="link">
+              Todo list
+            </Link>
+          </li>
+          <li>
+            <SignOutForm />
           </li>
         </ul>
       </nav>
