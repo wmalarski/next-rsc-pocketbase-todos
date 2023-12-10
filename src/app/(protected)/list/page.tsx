@@ -1,22 +1,24 @@
-import { createServerClient } from "@/server/pocketBase";
 import { TodoModel, listTodos } from "@/server/todos";
 import { container } from "@/styled-system/patterns";
-import { cookies } from "next/headers";
 import { CreateTodoForm } from "./CreateTodoForm";
+import { DeleteTodoForm } from "./DeleteTodoForm";
 import { ListCard } from "./ListCard";
+import { UpdateTodoForm } from "./UpdateTodoForm";
 
 type TodoListItemProps = {
   todo: TodoModel;
 };
 
 const TodoListItem = ({ todo }: TodoListItemProps) => {
-  return <li>{JSON.stringify({ todo }, null, 2)}</li>;
+  return (
+    <li>
+      <UpdateTodoForm id={todo.id} text={todo.text} />
+      <DeleteTodoForm id={todo.id} />
+    </li>
+  );
 };
 
 export default async function ListPage() {
-  const cookiesStore = cookies();
-  const pb = createServerClient(cookiesStore);
-
   const todos = await listTodos({ page: 0 });
 
   return (

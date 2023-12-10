@@ -1,15 +1,20 @@
 "use client";
 import { Button } from "@/components/Button/Button";
-import { createTodo } from "@/server/todos";
+import { deleteTodo } from "@/server/todos";
 import { useFormState, useFormStatus } from "react-dom";
 
-export const DeleteTodoForm = () => {
-  const [, formAction] = useFormState(createTodo, {});
+type DeleteTodoFormProps = {
+  id: string;
+};
+
+export const DeleteTodoForm = ({ id }: DeleteTodoFormProps) => {
+  const [, formAction] = useFormState(deleteTodo, {});
 
   const { pending } = useFormStatus();
 
   return (
     <form action={formAction}>
+      <input type="hidden" name="id" value={id} />
       <Button disabled={pending} type="submit">
         Delete
       </Button>
