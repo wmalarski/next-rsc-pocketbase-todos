@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { paths } from "./lib/paths";
 import { createServerClient } from "./server/pocketBase";
+import { paths } from "./utils/paths";
 
 export async function middleware(request: NextRequest) {
   const cookiesStore = cookies();

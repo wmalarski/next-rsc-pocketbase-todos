@@ -1,5 +1,5 @@
 "use server";
-import { paths } from "@/lib/paths";
+import { paths } from "@/utils/paths";
 import { decode } from "decode-formdata";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

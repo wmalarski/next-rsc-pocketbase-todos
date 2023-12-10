@@ -1,7 +1,13 @@
-import { createStyleContext } from "@/lib/create-style-context";
+import { createStyleContext } from "@/components/utils/createStyleContext";
 import { styled, type HTMLStyledProps } from "@/styled-system/jsx";
 import { alert } from "@/styled-system/recipes";
 import { ark } from "@ark-ui/react";
+import {
+  AlertCircleIcon,
+  AlertTriangleIcon,
+  CheckCircleIcon,
+  InfoIcon,
+} from "lucide-react";
 
 const { withProvider, withContext } = createStyleContext(alert);
 
@@ -37,3 +43,36 @@ export interface AlertDescriptionProps
   extends HTMLStyledProps<typeof AlertDescription> {}
 export interface AlertIconProps extends HTMLStyledProps<typeof AlertIcon> {}
 export interface AlertTitleProps extends HTMLStyledProps<typeof AlertTitle> {}
+
+const ICON_MAP = {
+  error: AlertTriangleIcon,
+  warning: AlertCircleIcon,
+  info: InfoIcon,
+  success: CheckCircleIcon,
+};
+
+type BasicAlertProps = AlertProps & {
+  title: string;
+  description?: string;
+  icon: keyof typeof ICON_MAP;
+};
+
+export const BasicAlert = ({
+  title,
+  description,
+  icon,
+  ...props
+}: BasicAlertProps) => {
+  const Icon = ICON_MAP[icon];
+  return (
+    <Alert {...props}>
+      <AlertIcon asChild>
+        <Icon />
+      </AlertIcon>
+      <AlertContent>
+        <AlertTitle>{title}</AlertTitle>
+        <AlertDescription>{description}</AlertDescription>
+      </AlertContent>
+    </Alert>
+  );
+};

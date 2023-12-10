@@ -1,5 +1,5 @@
 import { Link } from "@/components/Link/Link";
-import { paths } from "@/lib/paths";
+import { paths } from "@/utils/paths";
 import type { ReactNode } from "react";
 import { Footer } from "../Footer/Footer";
 

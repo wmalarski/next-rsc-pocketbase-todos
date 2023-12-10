@@ -1,7 +1,7 @@
 import { Button } from "@/components/Button/Button";
 import { Link } from "@/components/Link/Link";
-import { paths } from "@/lib/paths";
 import { css } from "@/styled-system/css";
+import { paths } from "@/utils/paths";
 import { Footer } from "./Footer/Footer";
 
 export default function Home() {
