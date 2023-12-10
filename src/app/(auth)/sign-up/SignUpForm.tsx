@@ -1,4 +1,5 @@
 "use client";
+import { BasicAlert } from "@/components/Alert/Alert";
 import { Button } from "@/components/Button/Button";
 import {
   Card,
@@ -15,18 +16,9 @@ import { Stack } from "@/styled-system/jsx";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const SignUpForm = () => {
-  const { pending, action, data, method } = useFormStatus();
+  const { pending } = useFormStatus();
 
-  const [state, formAction] = useFormState(signUpAction, { errors: [] });
-
-  console.log({
-    pending,
-    action,
-    data,
-    method,
-    state,
-    isAction: action === formAction,
-  });
+  const [state, formAction] = useFormState(signUpAction, {});
 
   return (
     <Card width="sm" asChild>
@@ -37,6 +29,9 @@ export const SignUpForm = () => {
         </CardHeader>
         <CardBody>
           <Stack gap="4">
+            {state.error ? (
+              <BasicAlert icon="error" title={state.error} />
+            ) : null}
             <Stack gap="1.5">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -47,6 +42,9 @@ export const SignUpForm = () => {
                 required
                 type="email"
               />
+              {state.errors?.email ? (
+                <BasicAlert icon="error" title={state.errors?.email.message} />
+              ) : null}
             </Stack>
             <Stack gap="1.5">
               <Label htmlFor="password">Password</Label>
@@ -57,6 +55,12 @@ export const SignUpForm = () => {
                 type="password"
                 required
               />
+              {state.errors?.password ? (
+                <BasicAlert
+                  icon="error"
+                  title={state.errors.password.message}
+                />
+              ) : null}
             </Stack>
             <Stack gap="1.5">
               <Label htmlFor="passwordConfirm">Confirm password</Label>
@@ -67,11 +71,19 @@ export const SignUpForm = () => {
                 type="password"
                 required
               />
+              {state.errors?.passwordConfirm ? (
+                <BasicAlert
+                  icon="error"
+                  title={state.errors.passwordConfirm.message}
+                />
+              ) : null}
             </Stack>
           </Stack>
         </CardBody>
         <CardFooter gap="3">
-          <Button disabled={pending}>Sign Up</Button>
+          <Button disabled={pending} type="submit">
+            Sign Up
+          </Button>
         </CardFooter>
       </form>
     </Card>

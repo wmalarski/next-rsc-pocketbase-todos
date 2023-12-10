@@ -3,22 +3,29 @@ import { paths } from "@/utils/paths";
 import { decode } from "decode-formdata";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { ClientResponseError } from "pocketbase";
 import { email, object, safeParseAsync, string } from "valibot";
+import {
+  createRequestError,
+  valibotResultToErrors,
+  type FormReturn,
+} from "./errors";
 import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
 
 const USERS_COLLECTION = "users";
 
-export async function signInAction(prevState: any, formData: FormData) {
+export async function signInAction(
+  _prevState: FormReturn,
+  formData: FormData,
+): Promise<FormReturn> {
   const result = await safeParseAsync(
     object({ email: string([email()]), password: string() }),
     decode(formData),
   );
 
   if (!result.success) {
-    return { errors: result.issues.map((issue) => issue.message) };
+    return valibotResultToErrors(result.issues);
   }
-
-  console.log("Server function", result.output);
 
   const cookiesStore = cookies();
   const pb = createServerClient(cookiesStore);
@@ -37,8 +44,9 @@ export async function signInAction(prevState: any, formData: FormData) {
       isSuccess = true;
     }
   } catch (error) {
-    console.error("CATCH", error);
-    return { errors: ["Invalid data"] };
+    if (error instanceof ClientResponseError) {
+      return { errors: error.data.data };
+    }
   }
 
   console.error("isSuccess", isSuccess);
@@ -46,10 +54,13 @@ export async function signInAction(prevState: any, formData: FormData) {
     redirect(paths.list());
   }
 
-  return { errors: ["Invalid request"] };
+  return createRequestError();
 }
 
-export async function signUpAction(prevState: any, formData: FormData) {
+export async function signUpAction(
+  _prevState: FormReturn,
+  formData: FormData,
+): Promise<FormReturn> {
   const result = await safeParseAsync(
     object({
       email: string([email()]),
@@ -62,10 +73,8 @@ export async function signUpAction(prevState: any, formData: FormData) {
   console.log(JSON.stringify(result.issues, null, 2));
 
   if (!result.success) {
-    return { errors: result.issues.map((issue) => issue.message) };
+    return valibotResultToErrors(result.issues);
   }
-
-  console.log("Server function", result.output);
 
   const cookiesStore = cookies();
   const pb = createServerClient(cookiesStore);
@@ -81,11 +90,6 @@ export async function signUpAction(prevState: any, formData: FormData) {
 
     console.error("Response", createResponse);
 
-    // if (response?.token) {
-    //   cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
-    //   isSuccess = true;
-    // }
-
     const verificationResponse = await pb
       .collection(USERS_COLLECTION)
       .requestVerification(result.output.email);
@@ -94,8 +98,9 @@ export async function signUpAction(prevState: any, formData: FormData) {
 
     isSuccess = true;
   } catch (error) {
-    console.error("CATCH", error);
-    return { errors: ["Invalid data"] };
+    if (error instanceof ClientResponseError) {
+      return { errors: error.data.data };
+    }
   }
 
   console.error("isSuccess", isSuccess);
@@ -103,5 +108,5 @@ export async function signUpAction(prevState: any, formData: FormData) {
     redirect(paths.list());
   }
 
-  return { errors: ["Invalid request"] };
+  return createRequestError();
 }

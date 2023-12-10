@@ -1,4 +1,5 @@
 "use client";
+import { BasicAlert } from "@/components/Alert/Alert";
 import { Button } from "@/components/Button/Button";
 import {
   Card,
@@ -15,17 +16,9 @@ import { Stack } from "@/styled-system/jsx";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const SignInForm = () => {
-  const [state, formAction] = useFormState(signInAction, { errors: [] });
+  const [state, formAction] = useFormState(signInAction, {});
 
-  const { pending, action, data, method } = useFormStatus();
-
-  console.log({
-    pending,
-    action,
-    data,
-    method,
-    state,
-  });
+  const { pending } = useFormStatus();
 
   return (
     <Card width="sm" asChild>
@@ -36,24 +29,45 @@ export const SignInForm = () => {
         </CardHeader>
         <CardBody>
           <Stack gap="4">
+            {state.error ? (
+              <BasicAlert icon="error" title={state.error} />
+            ) : null}
             <Stack gap="1.5">
               <Label htmlFor="email">Email</Label>
               <Input
+                disabled={pending}
                 name="email"
                 id="email"
                 type="email"
                 placeholder="Email"
                 required
               />
+              {state.errors?.email ? (
+                <BasicAlert icon="error" title={state.errors?.email.message} />
+              ) : null}
             </Stack>
             <Stack gap="1.5">
               <Label htmlFor="password">Password</Label>
-              <Input name="password" id="password" type="password" required />
+              <Input
+                disabled={pending}
+                name="password"
+                id="password"
+                type="password"
+                required
+              />
+              {state.errors?.password ? (
+                <BasicAlert
+                  icon="error"
+                  title={state.errors.password.message}
+                />
+              ) : null}
             </Stack>
           </Stack>
         </CardBody>
         <CardFooter gap="3">
-          <Button>Sign In</Button>
+          <Button disabled={pending} type="submit">
+            Sign In
+          </Button>
         </CardFooter>
       </form>
     </Card>
