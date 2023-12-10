@@ -37,8 +37,6 @@ export async function signInAction(
       .collection(USERS_COLLECTION)
       .authWithPassword(result.output.email, result.output.password);
 
-    console.error("Response", response);
-
     if (response?.token) {
       cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
       isSuccess = true;
@@ -48,8 +46,6 @@ export async function signInAction(
       return { errors: error.data.data };
     }
   }
-
-  console.error("isSuccess", isSuccess);
 
   if (isSuccess) {
     redirect(paths.list());
