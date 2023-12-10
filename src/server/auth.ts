@@ -8,7 +8,7 @@ import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
 
 const USERS_COLLECTION = "users";
 
-export async function signInAction(formData: FormData) {
+export async function signInAction(prevState: any, formData: FormData) {
   const result = await safeParseAsync(
     object({ email: string([email()]), password: string() }),
     decode(formData),
@@ -49,7 +49,7 @@ export async function signInAction(formData: FormData) {
   return { errors: ["Invalid request"] };
 }
 
-export async function signUpAction(formData: FormData) {
+export async function signUpAction(prevState: any, formData: FormData) {
   const result = await safeParseAsync(
     object({
       email: string([email()]),
@@ -58,6 +58,8 @@ export async function signUpAction(formData: FormData) {
     }),
     decode(formData),
   );
+
+  console.log(JSON.stringify(result.issues, null, 2));
 
   if (!result.success) {
     return { errors: result.issues.map((issue) => issue.message) };
