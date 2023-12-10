@@ -1,6 +1,8 @@
 "use server";
+import { paths } from "@/utils/paths";
 import { decode } from "decode-formdata";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
 import { object, safeParseAsync, string } from "valibot";
 import { createServerClient } from "./pocketBase";
@@ -46,12 +48,15 @@ export async function createTodo(
   const cookiesStore = cookies();
   const pb = createServerClient(cookiesStore);
 
-  try {
-    const createResponse = await pb.collection(TODOS_COLLECTION).create({
-      text: result.output.text,
-    });
+  if (!pb.authStore.model) {
+    redirect(paths.signIn);
+  }
 
-    console.error("Response", { createResponse });
+  try {
+    await pb.collection(TODOS_COLLECTION).create({
+      text: result.output.text,
+      user: pb.authStore.model.id,
+    });
 
     return { success: true };
   } catch (error) {
