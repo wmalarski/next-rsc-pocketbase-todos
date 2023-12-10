@@ -1,9 +1,17 @@
 import { createServerClient } from "@/server/pocketBase";
-import { listTodos } from "@/server/todos";
+import { TodoModel, listTodos } from "@/server/todos";
 import { container } from "@/styled-system/patterns";
 import { cookies } from "next/headers";
 import { CreateTodoForm } from "./CreateTodoForm";
 import { ListCard } from "./ListCard";
+
+type TodoListItemProps = {
+  todo: TodoModel;
+};
+
+const TodoListItem = ({ todo }: TodoListItemProps) => {
+  return <li>{JSON.stringify({ todo }, null, 2)}</li>;
+};
 
 export default async function ListPage() {
   const cookiesStore = cookies();
@@ -21,9 +29,11 @@ export default async function ListPage() {
     >
       <ListCard>
         <CreateTodoForm />
-        <pre>
-          {JSON.stringify({ user: pb.authStore.model, todos }, null, 2)}
-        </pre>
+        <ul>
+          {todos.items.map((todo) => (
+            <TodoListItem todo={todo} key={todo.id} />
+          ))}
+        </ul>
       </ListCard>
     </div>
   );
