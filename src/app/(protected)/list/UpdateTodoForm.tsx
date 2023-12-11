@@ -19,11 +19,11 @@ import { flex } from "@/styled-system/patterns";
 import { useFormState, useFormStatus } from "react-dom";
 
 type UpdateTodoFormProps = {
+  defaultText: string;
   id: string;
-  text: string;
 };
 
-export const UpdateTodoForm = ({ id }: UpdateTodoFormProps) => {
+export const UpdateTodoForm = ({ id, defaultText }: UpdateTodoFormProps) => {
   const [state, formAction] = useFormState(updateTodo, {});
 
   const { pending } = useFormStatus();
@@ -31,19 +31,24 @@ export const UpdateTodoForm = ({ id }: UpdateTodoFormProps) => {
   return (
     <form
       action={formAction}
-      className={flex({ gap: 2, justifyContent: "space-between" })}
+      className={flex({
+        gap: 2,
+        justifyContent: "space-between",
+        flexGrow: 1,
+        alignItems: "center",
+      })}
     >
       <input type="hidden" name="id" value={id} />
       <Stack gap="1.5" flexGrow={1}>
         {state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
         <Editable
           placeholder="Your favorite Framework"
-          defaultValue="Double click to edit"
-          activationMode="dblclick"
+          defaultValue={defaultText}
+          activationMode="focus"
         >
           {(state) => (
             <>
-              <EditableLabel asChild>
+              <EditableLabel srOnly asChild>
                 <Label>Text</Label>
               </EditableLabel>
               <EditableArea>
@@ -73,7 +78,12 @@ export const UpdateTodoForm = ({ id }: UpdateTodoFormProps) => {
           <BasicAlert icon="error" title={state.errors.text.message} />
         ) : null}
       </Stack>
-      <Button disabled={pending} type="submit">
+      <Button
+        variant="outline"
+        colorPalette="accent"
+        disabled={pending}
+        type="submit"
+      >
         Update
       </Button>
     </form>

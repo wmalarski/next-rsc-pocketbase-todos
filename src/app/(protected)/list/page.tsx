@@ -1,7 +1,8 @@
 import { TodoModel, listTodos } from "@/server/todos";
-import { container } from "@/styled-system/patterns";
+import { container, flex } from "@/styled-system/patterns";
 import { CreateTodoForm } from "./CreateTodoForm";
 import { DeleteTodoForm } from "./DeleteTodoForm";
+import { IsFinishedCheckbox } from "./IsFinishedCheckbox";
 import { ListCard } from "./ListCard";
 import { UpdateTodoForm } from "./UpdateTodoForm";
 
@@ -11,8 +12,9 @@ type TodoListItemProps = {
 
 const TodoListItem = ({ todo }: TodoListItemProps) => {
   return (
-    <li>
-      <UpdateTodoForm id={todo.id} text={todo.text} />
+    <li className={flex({ gap: 3, alignItems: "center" })}>
+      <IsFinishedCheckbox id={todo.id} defaultChecked={todo.isFinished} />
+      <UpdateTodoForm id={todo.id} defaultText={todo.text} />
       <DeleteTodoForm id={todo.id} />
     </li>
   );

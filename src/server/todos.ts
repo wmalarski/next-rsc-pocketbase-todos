@@ -34,13 +34,9 @@ export async function listTodos({ page }: ListTodosArgs) {
   const cookiesStore = cookies();
   const pb = createServerClient(cookiesStore);
 
-  const response = await pb
+  return pb
     .collection(TODOS_COLLECTION)
     .getList<TodoModel>(page, TODOS_PER_PAGE);
-
-  console.error("Response", response);
-
-  return response;
 }
 
 const createAuthorizedServerClient = () => {

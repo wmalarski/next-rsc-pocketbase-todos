@@ -36,7 +36,12 @@ export const CreateTodoForm = () => {
           ) : null}
         </Stack>
       </Stack>
-      <Button disabled={pending} type="submit">
+      <Button
+        variant="outline"
+        colorPalette="blue"
+        disabled={pending}
+        type="submit"
+      >
         Create
       </Button>
     </form>

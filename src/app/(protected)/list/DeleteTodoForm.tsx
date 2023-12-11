@@ -15,7 +15,12 @@ export const DeleteTodoForm = ({ id }: DeleteTodoFormProps) => {
   return (
     <form action={formAction}>
       <input type="hidden" name="id" value={id} />
-      <Button disabled={pending} type="submit">
+      <Button
+        variant="outline"
+        colorPalette="red"
+        disabled={pending}
+        type="submit"
+      >
         Delete
       </Button>
     </form>

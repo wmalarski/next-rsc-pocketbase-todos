@@ -15,7 +15,7 @@ type ListCardProps = {
 
 export const ListCard = ({ children }: ListCardProps) => {
   return (
-    <Card width="full">
+    <Card width="2xl">
       <CardHeader>
         <CardTitle>Todo List</CardTitle>
         <CardDescription>Create, update and remove todos</CardDescription>
