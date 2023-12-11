@@ -1,6 +1,7 @@
 "use server";
 import { paths } from "@/utils/paths";
 import { decode } from "decode-formdata";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
@@ -72,6 +73,8 @@ export async function createTodo(
       user: user.id,
     });
 
+    revalidatePath(paths.list());
+
     return { success: true };
   } catch (error) {
     if (error instanceof ClientResponseError) {
@@ -99,6 +102,8 @@ export async function deleteTodo(
 
   try {
     await pb.collection(TODOS_COLLECTION).delete(parsed.output.id);
+
+    revalidatePath(paths.list());
 
     return { success: true };
   } catch (error) {
@@ -134,6 +139,8 @@ export async function updateTodo(
       text: parsed.output.text,
       isFinished: parsed.output.isFinished,
     });
+
+    revalidatePath(paths.list());
 
     return { success: true };
   } catch (error) {

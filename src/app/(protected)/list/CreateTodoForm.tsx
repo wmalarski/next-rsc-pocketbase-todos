@@ -6,6 +6,7 @@ import { Label } from "@/components/Label/Label";
 import { createTodo } from "@/server/todos";
 import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";
+import { FormEvent } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const CreateTodoForm = () => {
@@ -13,10 +14,15 @@ export const CreateTodoForm = () => {
 
   const { pending } = useFormStatus();
 
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.currentTarget.reset();
+  };
+
   return (
     <form
       action={formAction}
       className={flex({ gap: 2, justifyContent: "space-between" })}
+      onSubmit={onSubmit}
     >
       <Stack gap="4" flexGrow={1}>
         {state?.error ? <BasicAlert icon="error" title={state.error} /> : null}

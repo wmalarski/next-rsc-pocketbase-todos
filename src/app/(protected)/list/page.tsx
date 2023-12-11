@@ -33,7 +33,7 @@ export default async function ListPage() {
     >
       <ListCard>
         <CreateTodoForm />
-        <ul>
+        <ul className={flex({ direction: "column", gap: 1 })}>
           {todos.items.map((todo) => (
             <TodoListItem todo={todo} key={todo.id} />
           ))}

@@ -41,11 +41,7 @@ export const UpdateTodoForm = ({ id, defaultText }: UpdateTodoFormProps) => {
       <input type="hidden" name="id" value={id} />
       <Stack gap="1.5" flexGrow={1}>
         {state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
-        <Editable
-          placeholder="Your favorite Framework"
-          defaultValue={defaultText}
-          activationMode="focus"
-        >
+        <Editable defaultValue={defaultText} activationMode="focus">
           {(state) => (
             <>
               <EditableLabel srOnly asChild>
