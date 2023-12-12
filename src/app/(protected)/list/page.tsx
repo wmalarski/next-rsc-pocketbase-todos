@@ -4,6 +4,7 @@ import { CreateTodoForm } from "./CreateTodoForm";
 import { DeleteTodoForm } from "./DeleteTodoForm";
 import { IsFinishedCheckbox } from "./IsFinishedCheckbox";
 import { ListCard } from "./ListCard";
+import { ListPagination } from "./ListPagination";
 import { UpdateTodoForm } from "./UpdateTodoForm";
 
 type TodoListItemProps = {
@@ -38,6 +39,10 @@ export default async function ListPage() {
             <TodoListItem todo={todo} key={todo.id} />
           ))}
         </ul>
+        <ListPagination
+          pageSize={todos.perPage}
+          totalItems={todos.totalItems}
+        />
       </ListCard>
     </div>
   );

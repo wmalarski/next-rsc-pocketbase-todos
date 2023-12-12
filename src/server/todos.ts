@@ -29,15 +29,16 @@ export type TodoModel = {
 
 type ListTodosArgs = {
   page: number;
+  perPage?: number;
 };
 
-export async function listTodos({ page }: ListTodosArgs) {
+export async function listTodos({ page, perPage }: ListTodosArgs) {
   const cookiesStore = cookies();
   const pb = createServerClient(cookiesStore);
 
   return pb
     .collection(TODOS_COLLECTION)
-    .getList<TodoModel>(page, TODOS_PER_PAGE);
+    .getList<TodoModel>(page, perPage || TODOS_PER_PAGE);
 }
 
 const createAuthorizedServerClient = () => {
