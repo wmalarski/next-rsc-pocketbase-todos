@@ -7,24 +7,37 @@ import {
   PaginationItem,
   PaginationNextTrigger,
   PaginationPrevTrigger,
+  PaginationProps,
 } from "@/components/Pagination/Pagination";
+import { paths } from "@/utils/paths";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type ListPaginationProps = {
-  totalItems: number;
+  page: number;
   pageSize: number;
+  totalItems: number;
 };
 
 export const ListPagination = ({
-  totalItems,
+  page,
   pageSize,
+  totalItems,
 }: ListPaginationProps) => {
+  const router = useRouter();
+
+  const onPageChange: PaginationProps["onPageChange"] = (details) => {
+    router.push(paths.list({ page: details.page }));
+  };
+
   return (
     <Pagination
       count={totalItems}
       pageSize={pageSize}
       siblingCount={1}
-      defaultPage={1}
+      defaultPage={page}
+      justifyContent="center"
+      onPageChange={onPageChange}
     >
       {({ pages }) => (
         <>

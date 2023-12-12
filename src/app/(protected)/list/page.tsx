@@ -1,5 +1,6 @@
 import { TodoModel, listTodos } from "@/server/todos";
 import { container, flex } from "@/styled-system/patterns";
+import { coerce, number, object, optional, parseAsync } from "valibot";
 import { CreateTodoForm } from "./CreateTodoForm";
 import { DeleteTodoForm } from "./DeleteTodoForm";
 import { IsFinishedCheckbox } from "./IsFinishedCheckbox";
@@ -16,13 +17,19 @@ const TodoListItem = ({ todo }: TodoListItemProps) => {
     <li className={flex({ gap: 3, alignItems: "center" })}>
       <IsFinishedCheckbox id={todo.id} defaultChecked={todo.isFinished} />
       <UpdateTodoForm id={todo.id} defaultText={todo.text} />
+      <pre>{todo.id}</pre>
       <DeleteTodoForm id={todo.id} />
     </li>
   );
 };
 
-export default async function ListPage() {
-  const todos = await listTodos({ page: 0 });
+export default async function ListPage(props: any) {
+  const schema = object({
+    searchParams: object({ page: coerce(optional(number(), 1), Number) }),
+  });
+  const parsed = await parseAsync(schema, props);
+
+  const todos = await listTodos({ page: parsed.searchParams.page });
 
   return (
     <div
@@ -40,6 +47,7 @@ export default async function ListPage() {
           ))}
         </ul>
         <ListPagination
+          page={parsed.searchParams.page}
           pageSize={todos.perPage}
           totalItems={todos.totalItems}
         />

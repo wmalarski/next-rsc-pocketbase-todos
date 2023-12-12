@@ -14,7 +14,7 @@ import {
 } from "./utils";
 
 const TODOS_COLLECTION = "todos";
-const TODOS_PER_PAGE = 10;
+const TODOS_PER_PAGE = 3;
 
 export type TodoModel = {
   collectionId: string;
