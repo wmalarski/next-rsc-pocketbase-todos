@@ -15,8 +15,8 @@ type TodoListItemProps = {
 const TodoListItem = ({ todo }: TodoListItemProps) => {
   return (
     <li className={flex({ gap: 3, alignItems: "center" })}>
-      <IsFinishedCheckbox id={todo.id} defaultChecked={todo.isFinished} />
-      <UpdateTodoForm id={todo.id} defaultText={todo.text} />
+      <IsFinishedCheckbox id={todo.id} initialIsFinished={todo.isFinished} />
+      <UpdateTodoForm id={todo.id} initialText={todo.text} />
       <pre>{todo.id}</pre>
       <DeleteTodoForm id={todo.id} />
     </li>

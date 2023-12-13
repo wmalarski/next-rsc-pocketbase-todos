@@ -19,11 +19,11 @@ import { flex } from "@/styled-system/patterns";
 import { useFormState, useFormStatus } from "react-dom";
 
 type UpdateTodoFormProps = {
-  defaultText: string;
+  initialText: string;
   id: string;
 };
 
-export const UpdateTodoForm = ({ id, defaultText }: UpdateTodoFormProps) => {
+export const UpdateTodoForm = ({ id, initialText }: UpdateTodoFormProps) => {
   const [state, formAction] = useFormState(updateTodo, {});
 
   const { pending } = useFormStatus();
@@ -41,7 +41,7 @@ export const UpdateTodoForm = ({ id, defaultText }: UpdateTodoFormProps) => {
       <input type="hidden" name="id" value={id} />
       <Stack gap="1.5" flexGrow={1}>
         {state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
-        <Editable defaultValue={defaultText} activationMode="focus">
+        <Editable defaultValue={initialText} activationMode="focus">
           {(state) => (
             <>
               <EditableLabel srOnly asChild>

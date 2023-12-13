@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
-import { boolean, object, optional, safeParseAsync, string } from "valibot";
+import { Input, boolean, object, safeParseAsync, string } from "valibot";
 import { createServerClient } from "./pocketBase";
 import {
   createRequestError,
@@ -121,12 +121,8 @@ export async function updateTodo(
   formData: FormData,
 ): Promise<FormReturn> {
   const parsed = await safeParseAsync(
-    object({
-      text: optional(string()),
-      isFinished: optional(boolean()),
-      id: string(),
-    }),
-    decode(formData, { booleans: ["isFinished"] }),
+    object({ text: string(), id: string() }),
+    decode(formData),
   );
 
   if (!parsed.success) {
@@ -138,6 +134,41 @@ export async function updateTodo(
   try {
     await pb.collection(TODOS_COLLECTION).update(parsed.output.id, {
       text: parsed.output.text,
+    });
+
+    revalidatePath(paths.list());
+
+    return { success: true };
+  } catch (error) {
+    if (error instanceof ClientResponseError) {
+      return { errors: error.data.data };
+    }
+  }
+
+  return createRequestError();
+}
+
+const updateIsFinishedTodoSchema = () => {
+  return object({ isFinished: boolean(), id: string() });
+};
+
+type UpdateIsFinishedTodoArgs = Input<
+  ReturnType<typeof updateIsFinishedTodoSchema>
+>;
+
+export async function updateIsFinishedTodo(
+  args: UpdateIsFinishedTodoArgs,
+): Promise<FormReturn> {
+  const parsed = await safeParseAsync(updateIsFinishedTodoSchema(), args);
+
+  if (!parsed.success) {
+    return valibotResultToErrors(parsed.issues);
+  }
+
+  const { pb } = createAuthorizedServerClient();
+
+  try {
+    await pb.collection(TODOS_COLLECTION).update(parsed.output.id, {
       isFinished: parsed.output.isFinished,
     });
 
