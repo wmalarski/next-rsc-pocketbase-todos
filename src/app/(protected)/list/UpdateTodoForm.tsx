@@ -16,21 +16,40 @@ import { Label } from "@/components/Label/Label";
 import { updateTodo } from "@/server/todos";
 import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";
-import { useFormState, useFormStatus } from "react-dom";
+import { useRef, useState } from "react";
+import { useFormState } from "react-dom";
 
 type UpdateTodoFormProps = {
-  initialText: string;
   id: string;
+  initialText: string;
+  isFinished: boolean;
 };
 
-export const UpdateTodoForm = ({ id, initialText }: UpdateTodoFormProps) => {
+export const UpdateTodoForm = ({
+  id,
+  initialText,
+  isFinished,
+}: UpdateTodoFormProps) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [state, formAction] = useFormState(updateTodo, {});
 
-  const { pending } = useFormStatus();
+  const [isDirty, setIsDirty] = useState(false);
+
+  const onFormChange = () => {
+    setIsDirty(true);
+  };
+
+  const onFormSubmit = () => {
+    setIsDirty(false);
+  };
 
   return (
     <form
+      ref={formRef}
       action={formAction}
+      onChange={onFormChange}
+      onSubmit={onFormSubmit}
       className={flex({
         gap: 2,
         justifyContent: "space-between",
@@ -41,15 +60,21 @@ export const UpdateTodoForm = ({ id, initialText }: UpdateTodoFormProps) => {
       <input type="hidden" name="id" value={id} />
       <Stack gap="1.5" flexGrow={1}>
         {state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
-        <Editable defaultValue={initialText} activationMode="focus">
+        <Editable
+          defaultValue={initialText}
+          activationMode={isFinished ? "none" : "focus"}
+        >
           {(state) => (
             <>
               <EditableLabel srOnly asChild>
                 <Label>Text</Label>
               </EditableLabel>
               <EditableArea>
-                <EditableInput />
-                <EditablePreview />
+                <EditableInput name="text" />
+                <EditablePreview
+                  textDecoration={isFinished ? "line-through" : undefined}
+                  opacity={isFinished ? 0.8 : 1}
+                />
               </EditableArea>
               <EditableControl>
                 {state.isEditing ? (
@@ -61,11 +86,11 @@ export const UpdateTodoForm = ({ id, initialText }: UpdateTodoFormProps) => {
                       <Button variant="link">Cancel</Button>
                     </EditableCancelTrigger>
                   </>
-                ) : (
+                ) : !isFinished ? (
                   <EditableEditTrigger asChild>
                     <Button variant="link">Edit</Button>
                   </EditableEditTrigger>
-                )}
+                ) : null}
               </EditableControl>
             </>
           )}
@@ -77,7 +102,7 @@ export const UpdateTodoForm = ({ id, initialText }: UpdateTodoFormProps) => {
       <Button
         variant="outline"
         colorPalette="accent"
-        disabled={pending}
+        disabled={!isDirty}
         type="submit"
       >
         Update

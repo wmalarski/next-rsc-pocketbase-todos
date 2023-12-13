@@ -7,24 +7,23 @@ import {
 } from "@/components/Checkbox/Checkbox";
 import { updateIsFinishedTodo } from "@/server/todos";
 import { CheckIcon } from "lucide-react";
-import { useState } from "react";
 
 type UpdateTodoFormProps = {
-  initialIsFinished: boolean;
+  isFinished: boolean;
+  onIsFinishedChange: (isFinished: boolean) => void;
   id: string;
 };
 
 export const IsFinishedCheckbox = ({
-  initialIsFinished,
+  isFinished,
   id,
+  onIsFinishedChange,
 }: UpdateTodoFormProps) => {
-  const [isFinished, setIsFinished] = useState(initialIsFinished);
-
   const onCheckedChange: CheckboxProps["onCheckedChange"] = async ({
     checked,
   }) => {
     const isFinished = Boolean(checked);
-    setIsFinished(isFinished);
+    onIsFinishedChange(isFinished);
     await updateIsFinishedTodo({ id, isFinished });
   };
 
