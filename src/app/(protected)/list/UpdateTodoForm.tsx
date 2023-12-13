@@ -70,7 +70,7 @@ export const UpdateTodoForm = ({
                 <Label>Text</Label>
               </EditableLabel>
               <EditableArea>
-                <EditableInput name="text" />
+                <EditableInput name="text" minLength={1} />
                 <EditablePreview
                   textDecoration={isFinished ? "line-through" : undefined}
                   opacity={isFinished ? 0.8 : 1}

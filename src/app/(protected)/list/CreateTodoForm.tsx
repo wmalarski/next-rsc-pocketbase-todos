@@ -6,23 +6,26 @@ import { Label } from "@/components/Label/Label";
 import { createTodo } from "@/server/todos";
 import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";
-import { FormEvent } from "react";
+import { useRef } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const CreateTodoForm = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [state, formAction] = useFormState(createTodo, {});
 
   const { pending } = useFormStatus();
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.currentTarget.reset();
+  const action = async (form: FormData) => {
+    formAction(form);
+    formRef.current?.reset();
   };
 
   return (
     <form
-      action={formAction}
+      ref={formRef}
+      action={action}
       className={flex({ gap: 2, justifyContent: "space-between" })}
-      onSubmit={onSubmit}
     >
       <Stack gap="4" flexGrow={1}>
         {state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
