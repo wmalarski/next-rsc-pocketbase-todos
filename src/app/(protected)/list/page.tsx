@@ -6,16 +6,35 @@ import { ListCard } from "./ListCard";
 import { ListPagination } from "./ListPagination";
 import { TodoListItem } from "./TodoListItem";
 
+type TodoListProps = {
+  page: number;
+};
+
+const TodoList = async ({ page }: TodoListProps) => {
+  const todos = await listTodos({ page });
+
+  return (
+    <>
+      <ul className={flex({ direction: "column", gap: 1 })}>
+        {todos.items.map((todo) => (
+          <TodoListItem todo={todo} key={todo.id} />
+        ))}
+      </ul>
+      <ListPagination
+        page={page}
+        pageSize={todos.perPage}
+        totalItems={todos.totalItems}
+      />
+    </>
+  );
+};
+
 export default async function ListPage(props: any) {
   const schema = object({
-    searchParams: object({ page: coerce(optional(number(), 1), Number) }),
+    searchParams: object({ page: optional(coerce(number(), Number), 1) }),
   });
 
-  console.log({ props });
-
   const parsed = await parseAsync(schema, props);
-
-  const todos = await listTodos({ page: parsed.searchParams.page });
 
   return (
     <div
@@ -27,16 +46,7 @@ export default async function ListPage(props: any) {
     >
       <ListCard>
         <CreateTodoForm />
-        <ul className={flex({ direction: "column", gap: 1 })}>
-          {todos.items.map((todo) => (
-            <TodoListItem todo={todo} key={todo.id} />
-          ))}
-        </ul>
-        <ListPagination
-          page={parsed.searchParams.page}
-          pageSize={todos.perPage}
-          totalItems={todos.totalItems}
-        />
+        <TodoList page={parsed.searchParams.page} />
       </ListCard>
     </div>
   );

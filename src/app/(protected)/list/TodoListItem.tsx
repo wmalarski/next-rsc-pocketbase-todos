@@ -14,7 +14,7 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
   const [isFinished, setIsFinished] = useState(todo.isFinished);
 
   return (
-    <li className={flex({ gap: 3, alignItems: "center" })}>
+    <li className={flex({ gap: 3, alignItems: "center", minH: 14 })}>
       <IsFinishedCheckbox
         id={todo.id}
         isFinished={isFinished}
