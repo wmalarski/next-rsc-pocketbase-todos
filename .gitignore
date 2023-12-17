@@ -37,3 +37,6 @@ next-env.d.ts
 
 # panda
 /src/styled-system
+
+# pb
+/backend/pb_data

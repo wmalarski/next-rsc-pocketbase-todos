@@ -10,6 +10,9 @@ export default async function ListPage(props: any) {
   const schema = object({
     searchParams: object({ page: coerce(optional(number(), 1), Number) }),
   });
+
+  console.log({ props });
+
   const parsed = await parseAsync(schema, props);
 
   const todos = await listTodos({ page: parsed.searchParams.page });
