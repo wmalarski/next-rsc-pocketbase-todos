@@ -67,8 +67,6 @@ export async function signUpAction(
     decode(formData),
   );
 
-  console.log("AAAA", JSON.stringify(result.issues, null, 2));
-
   if (!result.success) {
     return valibotResultToErrors(result.issues);
   }

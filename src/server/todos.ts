@@ -70,8 +70,6 @@ export async function createTodo(
 
   const { pb, user } = createAuthorizedServerClient();
 
-  console.log("parsed", parsed);
-
   try {
     await pb.collection(TODOS_COLLECTION).create({
       text: parsed.output.text,
