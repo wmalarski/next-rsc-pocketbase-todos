@@ -1,6 +1,6 @@
 "use client";
 import { TodoModel } from "@/server/todos";
-import { flex } from "@/styled-system/patterns";
+import { css } from "@/styled-system/css";
 import { useState } from "react";
 import { DeleteTodoForm } from "./DeleteTodoForm";
 import { IsFinishedCheckbox } from "./IsFinishedCheckbox";
@@ -13,8 +13,25 @@ type TodoListItemProps = {
 export const TodoListItem = ({ todo }: TodoListItemProps) => {
   const [isFinished, setIsFinished] = useState(todo.isFinished);
 
+  const [shouldHide, setShouldHide] = useState(false);
+
+  const onDeleteSubmit = () => {
+    setShouldHide(true);
+  };
+
+  const onDeleteFailure = () => {
+    setShouldHide(false);
+  };
+
   return (
-    <li className={flex({ gap: 3, alignItems: "center", minH: 14 })}>
+    <li
+      className={css({
+        gap: 3,
+        alignItems: "center",
+        minH: 14,
+        display: shouldHide ? "none" : "flex",
+      })}
+    >
       <IsFinishedCheckbox
         id={todo.id}
         isFinished={isFinished}
@@ -25,7 +42,11 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
         initialText={todo.text}
         isFinished={isFinished}
       />
-      <DeleteTodoForm id={todo.id} />
+      <DeleteTodoForm
+        id={todo.id}
+        onFailure={onDeleteFailure}
+        onSubmit={onDeleteSubmit}
+      />
     </li>
   );
 };
