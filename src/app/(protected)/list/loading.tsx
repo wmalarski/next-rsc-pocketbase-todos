@@ -1,5 +1,3 @@
-"use client"; // Error components must be Client Components
-
 import { Spinner } from "@/components/Spinner/Spinner";
 import { flex } from "@/styled-system/patterns";
 

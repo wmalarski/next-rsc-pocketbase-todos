@@ -4,7 +4,7 @@ import { decode } from "decode-formdata";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
-import { email, object, safeParseAsync, string } from "valibot";
+import { email, literal, object, safeParseAsync, string } from "valibot";
 import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
 import {
   createRequestError,
@@ -14,7 +14,7 @@ import {
 
 const USERS_COLLECTION = "users";
 
-export async function signInAction(
+export async function signInWithPasswordAction(
   _prevState: FormReturn,
   formData: FormData,
 ): Promise<FormReturn> {
@@ -36,6 +36,50 @@ export async function signInAction(
     const response = await pb
       .collection(USERS_COLLECTION)
       .authWithPassword(result.output.email, result.output.password);
+
+    if (response?.token) {
+      cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+      isSuccess = true;
+    }
+  } catch (error) {
+    if (error instanceof ClientResponseError) {
+      return { errors: error.data.data };
+    }
+  }
+
+  if (isSuccess) {
+    redirect(paths.list());
+  }
+
+  return createRequestError();
+}
+
+export async function signInWithProviderAction(
+  _prevState: FormReturn,
+  formData: FormData,
+): Promise<FormReturn> {
+  const result = await safeParseAsync(
+    object({ provider: literal("google") }),
+    decode(formData),
+  );
+
+  if (!result.success) {
+    return valibotResultToErrors(result.issues);
+  }
+
+  const cookiesStore = cookies();
+  const pb = createServerClient(cookiesStore);
+
+  let isSuccess = false;
+
+  try {
+    const response = await pb
+      .collection(USERS_COLLECTION)
+      .authWithOAuth2({ provider: result.output.provider });
+
+    console.log(pb.authStore.isValid);
+    console.log(pb.authStore.token);
+    console.log(pb.authStore.model?.id);
 
     if (response?.token) {
       cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
