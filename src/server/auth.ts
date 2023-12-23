@@ -71,11 +71,18 @@ export async function signInWithProviderAction(
   const pb = createServerClient(cookiesStore);
 
   let isSuccess = false;
+  let redirectUrl;
 
   try {
-    const response = await pb
-      .collection(USERS_COLLECTION)
-      .authWithOAuth2({ provider: result.output.provider });
+    const response = await pb.collection(USERS_COLLECTION).authWithOAuth2({
+      provider: result.output.provider,
+      urlCallback: (url) => {
+        console.log("urlCallback", url);
+        redirectUrl = url;
+      },
+    });
+
+    console.log({ response, redirectUrl });
 
     console.log(pb.authStore.isValid);
     console.log(pb.authStore.token);
@@ -86,6 +93,7 @@ export async function signInWithProviderAction(
       isSuccess = true;
     }
   } catch (error) {
+    console.log("error", error);
     if (error instanceof ClientResponseError) {
       return { errors: error.data.data };
     }

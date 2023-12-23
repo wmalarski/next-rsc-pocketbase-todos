@@ -9,25 +9,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/Card/Card";
-import { Input } from "@/components/Input/Input";
-import { Label } from "@/components/Label/Label";
 import { Link } from "@/components/Link/Link";
-import { signInWithPasswordAction } from "@/server/auth";
+import { signInWithProviderAction } from "@/server/auth";
 import { Stack } from "@/styled-system/jsx";
 import { paths } from "@/utils/paths";
 import { useFormState, useFormStatus } from "react-dom";
 
-export const SignInForm = () => {
-  const [state, formAction] = useFormState(signInWithPasswordAction, {});
+export const ProviderSignInForm = () => {
+  const [state, formAction] = useFormState(signInWithProviderAction, {});
 
   const { pending } = useFormStatus();
 
   return (
     <Card width="sm" asChild>
       <form action={formAction}>
+        <input type="hidden" name="provider" value="google" />
         <CardHeader>
           <CardTitle>Sign In</CardTitle>
-          <CardDescription>Sign in using email and password</CardDescription>
+          <CardDescription>Sign in using provider</CardDescription>
         </CardHeader>
         <CardBody>
           <Stack gap="4">
@@ -45,41 +44,11 @@ export const SignInForm = () => {
                 }
               />
             ) : null}
-            <Stack gap="1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                disabled={pending}
-                name="email"
-                id="email"
-                type="email"
-                placeholder="Email"
-                required
-              />
-              {state?.errors?.email ? (
-                <BasicAlert icon="error" title={state.errors?.email.message} />
-              ) : null}
-            </Stack>
-            <Stack gap="1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                disabled={pending}
-                name="password"
-                id="password"
-                type="password"
-                required
-              />
-              {state?.errors?.password ? (
-                <BasicAlert
-                  icon="error"
-                  title={state.errors.password.message}
-                />
-              ) : null}
-            </Stack>
           </Stack>
         </CardBody>
         <CardFooter gap="3">
           <Button disabled={pending} type="submit">
-            Sign In
+            Sign In using Google
           </Button>
         </CardFooter>
       </form>
