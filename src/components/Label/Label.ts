@@ -1,4 +1,4 @@
-import { styled, type HTMLStyledProps } from "@/styled-system/jsx";
+import { type HTMLStyledProps, styled } from "@/styled-system/jsx";
 import { label } from "@/styled-system/recipes";
 import { ark } from "@ark-ui/react";
 

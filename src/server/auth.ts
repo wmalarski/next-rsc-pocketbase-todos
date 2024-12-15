@@ -7,160 +7,160 @@ import { ClientResponseError } from "pocketbase";
 import { email, literal, object, safeParseAsync, string } from "valibot";
 import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
 import {
-  createRequestError,
-  valibotResultToErrors,
-  type FormReturn,
+	type FormReturn,
+	createRequestError,
+	valibotResultToErrors,
 } from "./utils";
 
 const USERS_COLLECTION = "users";
 
 export async function signInWithPasswordAction(
-  _prevState: FormReturn,
-  formData: FormData,
+	_prevState: FormReturn,
+	formData: FormData,
 ): Promise<FormReturn> {
-  const result = await safeParseAsync(
-    object({ email: string([email()]), password: string() }),
-    decode(formData),
-  );
+	const result = await safeParseAsync(
+		object({ email: string([email()]), password: string() }),
+		decode(formData),
+	);
 
-  if (!result.success) {
-    return valibotResultToErrors(result.issues);
-  }
+	if (!result.success) {
+		return valibotResultToErrors(result.issues);
+	}
 
-  const cookiesStore = cookies();
-  const pb = createServerClient(cookiesStore);
+	const cookiesStore = cookies();
+	const pb = createServerClient(cookiesStore);
 
-  let isSuccess = false;
+	let isSuccess = false;
 
-  try {
-    const response = await pb
-      .collection(USERS_COLLECTION)
-      .authWithPassword(result.output.email, result.output.password);
+	try {
+		const response = await pb
+			.collection(USERS_COLLECTION)
+			.authWithPassword(result.output.email, result.output.password);
 
-    if (response?.token) {
-      cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
-      isSuccess = true;
-    }
-  } catch (error) {
-    if (error instanceof ClientResponseError) {
-      return { errors: error.data.data };
-    }
-  }
+		if (response?.token) {
+			cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+			isSuccess = true;
+		}
+	} catch (error) {
+		if (error instanceof ClientResponseError) {
+			return { errors: error.data.data };
+		}
+	}
 
-  if (isSuccess) {
-    redirect(paths.list());
-  }
+	if (isSuccess) {
+		redirect(paths.list());
+	}
 
-  return createRequestError();
+	return createRequestError();
 }
 
 export async function signInWithProviderAction(
-  _prevState: FormReturn,
-  formData: FormData,
+	_prevState: FormReturn,
+	formData: FormData,
 ): Promise<FormReturn> {
-  const result = await safeParseAsync(
-    object({ provider: literal("google") }),
-    decode(formData),
-  );
+	const result = await safeParseAsync(
+		object({ provider: literal("google") }),
+		decode(formData),
+	);
 
-  if (!result.success) {
-    return valibotResultToErrors(result.issues);
-  }
+	if (!result.success) {
+		return valibotResultToErrors(result.issues);
+	}
 
-  const cookiesStore = cookies();
-  const pb = createServerClient(cookiesStore);
+	const cookiesStore = await cookies();
+	const pb = createServerClient(cookiesStore);
 
-  let isSuccess = false;
-  let redirectUrl;
+	let isSuccess = false;
+	let redirectUrl;
 
-  try {
-    const response = await pb.collection(USERS_COLLECTION).authWithOAuth2({
-      provider: result.output.provider,
-      urlCallback: (url) => {
-        console.log("urlCallback", url);
-        redirectUrl = url;
-      },
-    });
+	try {
+		const response = await pb.collection(USERS_COLLECTION).authWithOAuth2({
+			provider: result.output.provider,
+			urlCallback: (url) => {
+				console.log("urlCallback", url);
+				redirectUrl = url;
+			},
+		});
 
-    console.log({ response, redirectUrl });
+		console.log({ response, redirectUrl });
 
-    console.log(pb.authStore.isValid);
-    console.log(pb.authStore.token);
-    console.log(pb.authStore.model?.id);
+		console.log(pb.authStore.isValid);
+		console.log(pb.authStore.token);
+		console.log(pb.authStore.model?.id);
 
-    if (response?.token) {
-      cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
-      isSuccess = true;
-    }
-  } catch (error) {
-    console.log("error", error);
-    if (error instanceof ClientResponseError) {
-      return { errors: error.data.data };
-    }
-  }
+		if (response?.token) {
+			cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+			isSuccess = true;
+		}
+	} catch (error) {
+		console.log("error", error);
+		if (error instanceof ClientResponseError) {
+			return { errors: error.data.data };
+		}
+	}
 
-  if (isSuccess) {
-    redirect(paths.list());
-  }
+	if (isSuccess) {
+		redirect(paths.list());
+	}
 
-  return createRequestError();
+	return createRequestError();
 }
 
 export async function signUpAction(
-  _prevState: FormReturn,
-  formData: FormData,
+	_prevState: FormReturn,
+	formData: FormData,
 ): Promise<FormReturn> {
-  const result = await safeParseAsync(
-    object({
-      email: string([email()]),
-      password: string(),
-      passwordConfirm: string(),
-    }),
-    decode(formData),
-  );
+	const result = await safeParseAsync(
+		object({
+			email: string([email()]),
+			password: string(),
+			passwordConfirm: string(),
+		}),
+		decode(formData),
+	);
 
-  if (!result.success) {
-    return valibotResultToErrors(result.issues);
-  }
+	if (!result.success) {
+		return valibotResultToErrors(result.issues);
+	}
 
-  const cookiesStore = cookies();
-  const pb = createServerClient(cookiesStore);
+	const cookiesStore = cookies();
+	const pb = createServerClient(cookiesStore);
 
-  try {
-    const createResponse = await pb.collection(USERS_COLLECTION).create({
-      email: result.output.email,
-      password: result.output.password,
-      passwordConfirm: result.output.passwordConfirm,
-      username: result.output.email,
-    });
+	try {
+		const createResponse = await pb.collection(USERS_COLLECTION).create({
+			email: result.output.email,
+			password: result.output.password,
+			passwordConfirm: result.output.passwordConfirm,
+			username: result.output.email,
+		});
 
-    console.error("Response", createResponse);
+		console.error("Response", createResponse);
 
-    const verificationResponse = await pb
-      .collection(USERS_COLLECTION)
-      .requestVerification(result.output.email);
+		const verificationResponse = await pb
+			.collection(USERS_COLLECTION)
+			.requestVerification(result.output.email);
 
-    console.error("Response", verificationResponse);
+		console.error("Response", verificationResponse);
 
-    return { success: true };
-  } catch (error) {
-    if (error instanceof ClientResponseError) {
-      return { errors: error.data.data };
-    }
-  }
+		return { success: true };
+	} catch (error) {
+		if (error instanceof ClientResponseError) {
+			return { errors: error.data.data };
+		}
+	}
 
-  return createRequestError();
+	return createRequestError();
 }
 
 export async function signOutAction(
-  _prevState: FormReturn,
+	_prevState: FormReturn,
 ): Promise<FormReturn> {
-  const cookiesStore = cookies();
+	const cookiesStore = cookies();
 
-  const pb = createServerClient(cookiesStore);
-  pb.authStore.clear();
+	const pb = createServerClient(cookiesStore);
+	pb.authStore.clear();
 
-  cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+	cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
 
-  redirect(paths.signIn);
+	redirect(paths.signIn);
 }

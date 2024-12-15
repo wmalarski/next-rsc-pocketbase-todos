@@ -1,6 +1,6 @@
 "use client";
 import { createStyleContext } from "@/components/utils/createStyleContext";
-import { styled, type HTMLStyledProps } from "@/styled-system/jsx";
+import { type HTMLStyledProps, styled } from "@/styled-system/jsx";
 import { card } from "@/styled-system/recipes";
 import { ark } from "@ark-ui/react";
 
@@ -21,24 +21,24 @@ const Header = CardHeader;
 const Title = CardTitle;
 
 export {
-  Body,
-  Card,
-  CardBody,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Description,
-  Footer,
-  Header,
-  Root,
-  Title,
+	Body,
+	Card,
+	CardBody,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+	Description,
+	Footer,
+	Header,
+	Root,
+	Title,
 };
 
 export interface CardProps extends HTMLStyledProps<typeof Card> {}
 export interface CardBodyProps extends HTMLStyledProps<typeof CardBody> {}
 export interface CardDescriptionProps
-  extends HTMLStyledProps<typeof CardDescription> {}
+	extends HTMLStyledProps<typeof CardDescription> {}
 export interface CardFooterProps extends HTMLStyledProps<typeof CardFooter> {}
 export interface CardHeaderProps extends HTMLStyledProps<typeof CardHeader> {}
 export interface CardTitleProps extends HTMLStyledProps<typeof CardTitle> {}

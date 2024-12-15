@@ -6,39 +6,39 @@ import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 type DeleteTodoFormProps = {
-  id: string;
-  onFailure: VoidFunction;
-  onSubmit: VoidFunction;
+	id: string;
+	onFailure: VoidFunction;
+	onSubmit: VoidFunction;
 };
 
 export const DeleteTodoForm = ({
-  id,
-  onFailure,
-  onSubmit,
+	id,
+	onFailure,
+	onSubmit,
 }: DeleteTodoFormProps) => {
-  const [state, formAction] = useFormState(deleteTodo, {});
+	const [state, formAction] = useFormState(deleteTodo, {});
 
-  const { pending } = useFormStatus();
+	const { pending } = useFormStatus();
 
-  const onFailureRef = useEvent(onFailure);
+	const onFailureRef = useEvent(onFailure);
 
-  useEffect(() => {
-    if (state.error || state.errors) {
-      onFailureRef();
-    }
-  }, [onFailureRef, state.error, state.errors]);
+	useEffect(() => {
+		if (state.error || state.errors) {
+			onFailureRef();
+		}
+	}, [onFailureRef, state.error, state.errors]);
 
-  return (
-    <form action={formAction} onSubmit={onSubmit}>
-      <input type="hidden" name="id" value={id} />
-      <Button
-        variant="outline"
-        colorPalette="red"
-        disabled={pending}
-        type="submit"
-      >
-        Delete
-      </Button>
-    </form>
-  );
+	return (
+		<form action={formAction} onSubmit={onSubmit}>
+			<input type="hidden" name="id" value={id} />
+			<Button
+				variant="outline"
+				colorPalette="red"
+				disabled={pending}
+				type="submit"
+			>
+				Delete
+			</Button>
+		</form>
+	);
 };
