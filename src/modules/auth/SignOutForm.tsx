@@ -4,7 +4,7 @@ import { signOutAction } from "@/server/auth";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const SignOutForm = () => {
-	const [, formAction] = useFormState(signOutAction, {});
+	const [, formAction] = useFormState(signOutAction, { success: false });
 
 	const { pending } = useFormStatus();
 

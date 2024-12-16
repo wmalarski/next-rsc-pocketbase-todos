@@ -11,52 +11,39 @@ import {
 } from "@/components/Card/Card";
 import { Input } from "@/components/Input/Input";
 import { Label } from "@/components/Label/Label";
-import { Link } from "@/components/Link/Link";
-import { signInWithPasswordAction } from "@/server/auth";
+import { signUpAction } from "@/server/auth";
 import { Stack } from "@/styled-system/jsx";
-import { paths } from "@/utils/paths";
 import { useFormState, useFormStatus } from "react-dom";
 
-export const SignInForm = () => {
-	const [state, formAction] = useFormState(signInWithPasswordAction, {});
-
+export const SignUpForm = () => {
 	const { pending } = useFormStatus();
+
+	const [state, formAction] = useFormState(signUpAction, { success: false });
 
 	return (
 		<Card width="sm" asChild>
 			<form action={formAction}>
 				<CardHeader>
-					<CardTitle>Sign In</CardTitle>
-					<CardDescription>Sign in using email and password</CardDescription>
+					<CardTitle>Sign Up</CardTitle>
+					<CardDescription>Sign up using email and password</CardDescription>
 				</CardHeader>
 				<CardBody>
 					<Stack gap="4">
-						{state?.error ? (
+						{state.error ? (
 							<BasicAlert icon="error" title={state.error} />
-						) : null}
-						{state?.success ? (
-							<BasicAlert
-								icon="success"
-								title="Sign up successful"
-								description={
-									<Link href={paths.signIn} variant="link">
-										Go to sign in
-									</Link>
-								}
-							/>
 						) : null}
 						<Stack gap="1.5">
 							<Label htmlFor="email">Email</Label>
 							<Input
 								disabled={pending}
-								name="email"
 								id="email"
-								type="email"
+								name="email"
 								placeholder="Email"
 								required
+								type="email"
 							/>
-							{state?.errors?.email ? (
-								<BasicAlert icon="error" title={state.errors?.email.message} />
+							{state.errors?.email ? (
+								<BasicAlert icon="error" title={state.errors?.email} />
 							) : null}
 						</Stack>
 						<Stack gap="1.5">
@@ -68,18 +55,28 @@ export const SignInForm = () => {
 								type="password"
 								required
 							/>
-							{state?.errors?.password ? (
-								<BasicAlert
-									icon="error"
-									title={state.errors.password.message}
-								/>
+							{state.errors?.password ? (
+								<BasicAlert icon="error" title={state.errors.password} />
+							) : null}
+						</Stack>
+						<Stack gap="1.5">
+							<Label htmlFor="passwordConfirm">Confirm password</Label>
+							<Input
+								disabled={pending}
+								name="passwordConfirm"
+								id="passwordConfirm"
+								type="password"
+								required
+							/>
+							{state.errors?.passwordConfirm ? (
+								<BasicAlert icon="error" title={state.errors.passwordConfirm} />
 							) : null}
 						</Stack>
 					</Stack>
 				</CardBody>
 				<CardFooter gap="3">
 					<Button disabled={pending} type="submit">
-						Sign In
+						Sign Up
 					</Button>
 				</CardFooter>
 			</form>

@@ -16,7 +16,9 @@ import { paths } from "@/utils/paths";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const ProviderSignInForm = () => {
-	const [state, formAction] = useFormState(signInWithProviderAction, {});
+	const [state, formAction] = useFormState(signInWithProviderAction, {
+		success: false,
+	});
 
 	const { pending } = useFormStatus();
 

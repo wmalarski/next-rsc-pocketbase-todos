@@ -1,6 +1,6 @@
 import { flex } from "@/styled-system/patterns";
-import { ProviderSignInForm } from "./ProviderSignInForm";
-import { SignInForm } from "./SignInForm";
+import { ProviderSignInForm } from "../../../modules/auth/ProviderSignInForm";
+import { SignInForm } from "../../../modules/auth/SignInForm";
 
 export default function SignInPage() {
 	return (
@@ -11,10 +11,10 @@ export default function SignInPage() {
 				flexDirection: "column",
 				alignItems: "center",
 				gap: "4",
-				md: {
-					alignItems: "unset",
-					flexDirection: "row",
-				},
+				// md: {
+				// 	alignItems: "unset",
+				// 	flexDirection: "row",
+				// },
 			})}
 		>
 			<SignInForm />

@@ -3,8 +3,8 @@ import { css } from "@/styled-system/css";
 import { flex } from "@/styled-system/patterns";
 import { paths } from "@/utils/paths";
 import type { ReactNode } from "react";
+import { SignOutForm } from "../../modules/auth/SignOutForm";
 import { Footer } from "../Footer/Footer";
-import { SignOutForm } from "./SignOutForm";
 
 const ProtectedHeader = () => {
 	return (
