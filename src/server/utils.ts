@@ -1,19 +1,27 @@
-import type { Issues } from "valibot";
+import type * as v from "valibot";
 
-export type FormReturn = {
-	errors?: Record<string, { message: string }>;
+export const createRequestError = (): ActionResult => {
+	return { error: "Request error", success: false };
+};
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export type ActionResult<T = any> = {
+	data?: T;
 	error?: string;
-	success?: boolean;
+	errors?: Record<string, string>;
+	success: boolean;
 };
 
-export const valibotResultToErrors = (issues: Issues): FormReturn => {
-	const entries = issues.map((issue) => {
-		const key = issue.path?.map((item) => String(item.key)).join(".");
-		return [key, { message: issue.message }];
-	});
-	return { errors: Object.fromEntries(entries) };
-};
-
-export const createRequestError = (): FormReturn => {
-	return { error: "Request error" };
+export const parseValibotIssues = (
+	issues: v.BaseIssue<unknown>[],
+): ActionResult => {
+	return {
+		errors: Object.fromEntries(
+			issues.map((issue) => [
+				issue.path?.map((item) => item.key).join(".") || "global",
+				issue.message,
+			]),
+		),
+		success: false,
+	};
 };

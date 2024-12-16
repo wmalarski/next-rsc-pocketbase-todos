@@ -4,30 +4,30 @@ import { decode } from "decode-formdata";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
-import { email, literal, object, safeParseAsync, string } from "valibot";
+import * as v from "valibot";
 import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
 import {
-	type FormReturn,
+	type ActionResult,
 	createRequestError,
-	valibotResultToErrors,
+	parseValibotIssues,
 } from "./utils";
 
 const USERS_COLLECTION = "users";
 
 export async function signInWithPasswordAction(
-	_prevState: FormReturn,
+	_prevState: ActionResult,
 	formData: FormData,
-): Promise<FormReturn> {
-	const result = await safeParseAsync(
-		object({ email: string([email()]), password: string() }),
+): Promise<ActionResult> {
+	const result = await v.safeParseAsync(
+		v.object({ email: v.pipe(v.string(), v.email()), password: v.string() }),
 		decode(formData),
 	);
 
 	if (!result.success) {
-		return valibotResultToErrors(result.issues);
+		return parseValibotIssues(result.issues);
 	}
 
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const pb = createServerClient(cookiesStore);
 
 	let isSuccess = false;
@@ -43,7 +43,7 @@ export async function signInWithPasswordAction(
 		}
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data };
+			return { errors: error.data.data, success: false };
 		}
 	}
 
@@ -55,23 +55,23 @@ export async function signInWithPasswordAction(
 }
 
 export async function signInWithProviderAction(
-	_prevState: FormReturn,
+	_prevState: ActionResult,
 	formData: FormData,
-): Promise<FormReturn> {
-	const result = await safeParseAsync(
-		object({ provider: literal("google") }),
+): Promise<ActionResult> {
+	const result = await v.safeParseAsync(
+		v.object({ provider: v.literal("google") }),
 		decode(formData),
 	);
 
 	if (!result.success) {
-		return valibotResultToErrors(result.issues);
+		return parseValibotIssues(result.issues);
 	}
 
 	const cookiesStore = await cookies();
 	const pb = createServerClient(cookiesStore);
 
 	let isSuccess = false;
-	let redirectUrl;
+	let redirectUrl: string | undefined = undefined;
 
 	try {
 		const response = await pb.collection(USERS_COLLECTION).authWithOAuth2({
@@ -95,7 +95,7 @@ export async function signInWithProviderAction(
 	} catch (error) {
 		console.log("error", error);
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data };
+			return { errors: error.data.data, success: false };
 		}
 	}
 
@@ -107,23 +107,23 @@ export async function signInWithProviderAction(
 }
 
 export async function signUpAction(
-	_prevState: FormReturn,
+	_prevState: ActionResult,
 	formData: FormData,
-): Promise<FormReturn> {
-	const result = await safeParseAsync(
-		object({
-			email: string([email()]),
-			password: string(),
-			passwordConfirm: string(),
+): Promise<ActionResult> {
+	const result = await v.safeParseAsync(
+		v.object({
+			email: v.pipe(v.string(), v.email()),
+			password: v.string(),
+			passwordConfirm: v.string(),
 		}),
 		decode(formData),
 	);
 
 	if (!result.success) {
-		return valibotResultToErrors(result.issues);
+		return parseValibotIssues(result.issues);
 	}
 
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const pb = createServerClient(cookiesStore);
 
 	try {
@@ -145,7 +145,7 @@ export async function signUpAction(
 		return { success: true };
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data };
+			return { errors: error.data.data, success: false };
 		}
 	}
 
@@ -153,9 +153,9 @@ export async function signUpAction(
 }
 
 export async function signOutAction(
-	_prevState: FormReturn,
-): Promise<FormReturn> {
-	const cookiesStore = cookies();
+	_prevState: ActionResult,
+): Promise<ActionResult> {
+	const cookiesStore = await cookies();
 
 	const pb = createServerClient(cookiesStore);
 	pb.authStore.clear();

@@ -1,6 +1,6 @@
 import { listTodos } from "@/server/todos";
 import { container, flex } from "@/styled-system/patterns";
-import { coerce, number, object, optional, parseAsync } from "valibot";
+import * as v from "valibot";
 import { CreateTodoForm } from "./CreateTodoForm";
 import { ListCard } from "./ListCard";
 import { ListPagination } from "./ListPagination";
@@ -29,12 +29,13 @@ const TodoList = async ({ page }: TodoListProps) => {
 	);
 };
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default async function ListPage(props: any) {
-	const schema = object({
-		searchParams: object({ page: optional(coerce(number(), Number), 1) }),
+	const schema = v.object({
+		searchParams: v.object({ page: v.pipe(v.unknown(), v.transform(Number)) }),
 	});
 
-	const parsed = await parseAsync(schema, props);
+	const parsed = await v.parseAsync(schema, props);
 
 	return (
 		<div

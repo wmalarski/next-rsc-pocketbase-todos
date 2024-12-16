@@ -5,12 +5,12 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
-import { type Input, boolean, object, safeParseAsync, string } from "valibot";
+import * as v from "valibot";
 import { createServerClient } from "./pocketBase";
 import {
-	type FormReturn,
+	type ActionResult,
 	createRequestError,
-	valibotResultToErrors,
+	parseValibotIssues,
 } from "./utils";
 
 const TODOS_COLLECTION = "todos";
@@ -33,7 +33,7 @@ type ListTodosArgs = {
 };
 
 export async function listTodos({ page, perPage }: ListTodosArgs) {
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const pb = createServerClient(cookiesStore);
 
 	return pb
@@ -43,8 +43,8 @@ export async function listTodos({ page, perPage }: ListTodosArgs) {
 		});
 }
 
-const createAuthorizedServerClient = () => {
-	const cookiesStore = cookies();
+const createAuthorizedServerClient = async () => {
+	const cookiesStore = await cookies();
 	const pb = createServerClient(cookiesStore);
 	const user = pb.authStore.model;
 
@@ -56,19 +56,19 @@ const createAuthorizedServerClient = () => {
 };
 
 export async function createTodo(
-	_prevState: FormReturn,
+	_prevState: ActionResult,
 	formData: FormData,
-): Promise<FormReturn> {
-	const parsed = await safeParseAsync(
-		object({ text: string() }),
+): Promise<ActionResult> {
+	const parsed = await v.safeParseAsync(
+		v.object({ text: v.string() }),
 		decode(formData),
 	);
 
 	if (!parsed.success) {
-		return valibotResultToErrors(parsed.issues);
+		return parseValibotIssues(parsed.issues);
 	}
 
-	const { pb, user } = createAuthorizedServerClient();
+	const { pb, user } = await createAuthorizedServerClient();
 
 	try {
 		await pb.collection(TODOS_COLLECTION).create({
@@ -81,7 +81,7 @@ export async function createTodo(
 		return { success: true };
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data };
+			return { errors: error.data.data, success: false };
 		}
 	}
 
@@ -89,19 +89,19 @@ export async function createTodo(
 }
 
 export async function deleteTodo(
-	_prevState: FormReturn,
+	_prevState: ActionResult,
 	formData: FormData,
-): Promise<FormReturn> {
-	const parsed = await safeParseAsync(
-		object({ id: string() }),
+): Promise<ActionResult> {
+	const parsed = await v.safeParseAsync(
+		v.object({ id: v.string() }),
 		decode(formData),
 	);
 
 	if (!parsed.success) {
-		return valibotResultToErrors(parsed.issues);
+		return parseValibotIssues(parsed.issues);
 	}
 
-	const { pb } = createAuthorizedServerClient();
+	const { pb } = await createAuthorizedServerClient();
 
 	try {
 		await pb.collection(TODOS_COLLECTION).delete(parsed.output.id);
@@ -111,7 +111,7 @@ export async function deleteTodo(
 		return { success: true };
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data };
+			return { errors: error.data.data, success: false };
 		}
 	}
 
@@ -119,19 +119,19 @@ export async function deleteTodo(
 }
 
 export async function updateTodo(
-	_prevState: FormReturn,
+	_prevState: ActionResult,
 	formData: FormData,
-): Promise<FormReturn> {
-	const parsed = await safeParseAsync(
-		object({ text: string(), id: string() }),
+): Promise<ActionResult> {
+	const parsed = await v.safeParseAsync(
+		v.object({ text: v.string(), id: v.string() }),
 		decode(formData),
 	);
 
 	if (!parsed.success) {
-		return valibotResultToErrors(parsed.issues);
+		return parseValibotIssues(parsed.issues);
 	}
 
-	const { pb } = createAuthorizedServerClient();
+	const { pb } = await createAuthorizedServerClient();
 
 	try {
 		await pb.collection(TODOS_COLLECTION).update(parsed.output.id, {
@@ -143,7 +143,7 @@ export async function updateTodo(
 		return { success: true };
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data };
+			return { errors: error.data.data, success: false };
 		}
 	}
 
@@ -151,23 +151,23 @@ export async function updateTodo(
 }
 
 const updateIsFinishedTodoSchema = () => {
-	return object({ isFinished: boolean(), id: string() });
+	return v.object({ isFinished: v.boolean(), id: v.string() });
 };
 
-type UpdateIsFinishedTodoArgs = Input<
+type UpdateIsFinishedTodoArgs = v.InferInput<
 	ReturnType<typeof updateIsFinishedTodoSchema>
 >;
 
 export async function updateIsFinishedTodo(
 	args: UpdateIsFinishedTodoArgs,
-): Promise<FormReturn> {
-	const parsed = await safeParseAsync(updateIsFinishedTodoSchema(), args);
+): Promise<ActionResult> {
+	const parsed = await v.safeParseAsync(updateIsFinishedTodoSchema(), args);
 
 	if (!parsed.success) {
-		return valibotResultToErrors(parsed.issues);
+		return parseValibotIssues(parsed.issues);
 	}
 
-	const { pb } = createAuthorizedServerClient();
+	const { pb } = await createAuthorizedServerClient();
 
 	try {
 		await pb.collection(TODOS_COLLECTION).update(parsed.output.id, {
@@ -179,7 +179,7 @@ export async function updateIsFinishedTodo(
 		return { success: true };
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data };
+			return { errors: error.data.data, success: false };
 		}
 	}
 

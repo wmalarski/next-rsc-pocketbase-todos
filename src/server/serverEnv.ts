@@ -1,7 +1,7 @@
-import { url, object, parse, string } from "valibot";
+import * as v from "valibot";
 
-const envSchema = object({
-	POCKETBASE_URL: string([url()]),
+const envSchema = v.object({
+	POCKETBASE_URL: v.pipe(v.string(), v.url()),
 });
 
-export const serverEnv = parse(envSchema, process.env);
+export const serverEnv = v.parse(envSchema, process.env);
