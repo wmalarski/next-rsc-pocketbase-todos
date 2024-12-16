@@ -32,7 +32,7 @@ export const UpdateTodoForm = ({
 }: UpdateTodoFormProps) => {
 	const formRef = useRef<HTMLFormElement>(null);
 
-	const [state, formAction] = useFormState(updateTodo, {});
+	const [state, formAction] = useFormState(updateTodo, { success: false });
 
 	const [isDirty, setIsDirty] = useState(false);
 

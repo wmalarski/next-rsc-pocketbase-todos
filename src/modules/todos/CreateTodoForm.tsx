@@ -12,7 +12,7 @@ import { useFormState, useFormStatus } from "react-dom";
 export const CreateTodoForm = () => {
 	const formRef = useRef<HTMLFormElement>(null);
 
-	const [state, formAction] = useFormState(createTodo, {});
+	const [state, formAction] = useFormState(createTodo, { success: false });
 
 	const { pending } = useFormStatus();
 
@@ -41,13 +41,13 @@ export const CreateTodoForm = () => {
 						required
 					/>
 					{state?.errors?.text ? (
-						<BasicAlert icon="error" title={state.errors.text.message} />
+						<BasicAlert icon="error" title={state.errors.text} />
 					) : null}
 				</Stack>
 			</Stack>
 			<Button
 				variant="outline"
-				colorPalette="blue"
+				// colorPalette="blue"
 				disabled={pending}
 				type="submit"
 			>

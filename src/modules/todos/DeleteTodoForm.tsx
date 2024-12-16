@@ -16,7 +16,7 @@ export const DeleteTodoForm = ({
 	onFailure,
 	onSubmit,
 }: DeleteTodoFormProps) => {
-	const [state, formAction] = useFormState(deleteTodo, {});
+	const [state, formAction] = useFormState(deleteTodo, { success: false });
 
 	const { pending } = useFormStatus();
 
@@ -33,7 +33,7 @@ export const DeleteTodoForm = ({
 			<input type="hidden" name="id" value={id} />
 			<Button
 				variant="outline"
-				colorPalette="red"
+				// colorPalette="red"
 				disabled={pending}
 				type="submit"
 			>

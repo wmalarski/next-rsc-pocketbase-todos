@@ -1,10 +1,10 @@
+import { CreateTodoForm } from "@/modules/todos/CreateTodoForm";
+import { ListCard } from "@/modules/todos/ListCard";
+import { ListPagination } from "@/modules/todos/ListPagination";
+import { TodoListItem } from "@/modules/todos/TodoListItem";
 import { listTodos } from "@/server/todos";
 import { container, flex } from "@/styled-system/patterns";
 import * as v from "valibot";
-import { CreateTodoForm } from "./CreateTodoForm";
-import { ListCard } from "./ListCard";
-import { ListPagination } from "./ListPagination";
-import { TodoListItem } from "./TodoListItem";
 
 type TodoListProps = {
 	page: number;
