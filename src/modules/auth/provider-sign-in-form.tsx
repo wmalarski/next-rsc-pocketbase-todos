@@ -1,6 +1,8 @@
 "use client";
-import { BasicAlert } from "@/components/alert/alert";
-import { Button } from "@/components/button/button";
+import { signInWithProviderAction } from "@/server/auth";
+import { Stack } from "@/styled-system/jsx";
+import { BasicAlert } from "@/ui/alert";
+import { Button } from "@/ui/button";
 import {
 	Card,
 	CardBody,
@@ -8,10 +10,8 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/card/card";
-import { Link } from "@/components/link/link";
-import { signInWithProviderAction } from "@/server/auth";
-import { Stack } from "@/styled-system/jsx";
+} from "@/ui/card";
+import { Link } from "@/ui/link";
 import { paths } from "@/utils/paths";
 import { useFormState, useFormStatus } from "react-dom";
 

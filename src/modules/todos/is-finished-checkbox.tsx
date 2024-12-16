@@ -1,11 +1,11 @@
 "use client";
+import { updateIsFinishedTodo } from "@/server/todos";
 import {
 	Checkbox,
 	CheckboxControl,
 	CheckboxLabel,
 	type CheckboxProps,
-} from "@/components/checkbox/checkbox";
-import { updateIsFinishedTodo } from "@/server/todos";
+} from "@/ui/checkbox";
 import { CheckIcon } from "lucide-react";
 
 type UpdateTodoFormProps = {

@@ -1,6 +1,6 @@
-import { Link } from "@/components/link/link";
 import { css } from "@/styled-system/css";
 import { flex } from "@/styled-system/patterns";
+import { Link } from "@/ui/link";
 import { paths } from "@/utils/paths";
 import type { ReactNode } from "react";
 import { SignOutForm } from "../../modules/auth/sign-out-form";
@@ -12,14 +12,10 @@ const ProtectedHeader = () => {
 			<nav className={css({ padding: "2" })}>
 				<ul className={flex({ gap: "2" })}>
 					<li>
-						<Link href={paths.home} variant="link">
-							Home
-						</Link>
+						<Link href={paths.home}>Home</Link>
 					</li>
 					<li className={css({ flexGrow: 1 })}>
-						<Link href={paths.list()} variant="link">
-							Todo list
-						</Link>
+						<Link href={paths.list()}>Todo list</Link>
 					</li>
 					<li>
 						<SignOutForm />

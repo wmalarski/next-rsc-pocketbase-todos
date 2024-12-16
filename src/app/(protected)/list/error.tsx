@@ -1,8 +1,8 @@
 "use client"; // Error components must be Client Components
 
-import { Button } from "@/components/button/button";
-import { Heading } from "@/components/heading/heading";
 import { flex } from "@/styled-system/patterns";
+import { Button } from "@/ui/button";
+import { Heading } from "@/ui/heading";
 import { useEffect } from "react";
 
 type ErrorProps = {

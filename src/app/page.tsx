@@ -1,6 +1,6 @@
-import { Button } from "@/components/button/button";
-import { Link } from "@/components/link/link";
 import { css } from "@/styled-system/css";
+import { Button } from "@/ui/button";
+import { Link } from "@/ui/link";
 import { paths } from "@/utils/paths";
 import { Footer } from "../modules/common/footer";
 

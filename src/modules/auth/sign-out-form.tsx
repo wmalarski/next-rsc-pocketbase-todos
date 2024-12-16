@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/button/button";
 import { signOutAction } from "@/server/auth";
+import { Button } from "@/ui/button";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const SignOutForm = () => {

@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/button/button";
 import { deleteTodo } from "@/server/todos";
+import { Button } from "@/ui/button";
 import { useEvent } from "@/utils/useEvent";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";

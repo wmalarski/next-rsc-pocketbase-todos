@@ -1,6 +1,6 @@
-import { Link } from "@/components/link/link";
 import { css } from "@/styled-system/css";
 import { flex } from "@/styled-system/patterns";
+import { Link } from "@/ui/link";
 import { paths } from "@/utils/paths";
 import type { ReactNode } from "react";
 import { Footer } from "../../modules/common/footer";
@@ -11,19 +11,13 @@ const AnonHeader = () => {
 			<nav className={css({ padding: "2" })}>
 				<ul className={flex({ gap: "2" })}>
 					<li>
-						<Link href={paths.home} variant="link">
-							Home
-						</Link>
+						<Link href={paths.home}>Home</Link>
 					</li>
 					<li>
-						<Link href={paths.signIn} variant="link">
-							Sign In
-						</Link>
+						<Link href={paths.signIn}>Sign In</Link>
 					</li>
 					<li>
-						<Link href={paths.signUp} variant="link">
-							Sign Up
-						</Link>
+						<Link href={paths.signUp}>Sign Up</Link>
 					</li>
 				</ul>
 			</nav>

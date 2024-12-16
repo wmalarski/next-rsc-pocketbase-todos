@@ -1,11 +1,11 @@
 "use client";
-import { BasicAlert } from "@/components/alert/alert";
-import { Button } from "@/components/button/button";
-import { Input } from "@/components/input/input";
-import { Label } from "@/components/label/label";
 import { createTodo } from "@/server/todos";
 import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";
+import { BasicAlert } from "@/ui/alert";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
 import { useRef } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 

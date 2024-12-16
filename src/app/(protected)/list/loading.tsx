@@ -1,5 +1,5 @@
-import { Spinner } from "@/components/spinner/spinner";
 import { flex } from "@/styled-system/patterns";
+import { Spinner } from "@/ui/spinner";
 
 export default function Loading() {
 	return (

@@ -1,6 +1,8 @@
 "use client";
-import { BasicAlert } from "@/components/alert/alert";
-import { Button } from "@/components/button/button";
+import { signInWithPasswordAction } from "@/server/auth";
+import { Stack } from "@/styled-system/jsx";
+import { BasicAlert } from "@/ui/alert";
+import { Button } from "@/ui/button";
 import {
 	Card,
 	CardBody,
@@ -8,12 +10,10 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/card/card";
-import { Input } from "@/components/input/input";
-import { Label } from "@/components/label/label";
-import { Link } from "@/components/link/link";
-import { signInWithPasswordAction } from "@/server/auth";
-import { Stack } from "@/styled-system/jsx";
+} from "@/ui/card";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
+import { Link } from "@/ui/link";
 import { paths } from "@/utils/paths";
 import { useFormState, useFormStatus } from "react-dom";
 

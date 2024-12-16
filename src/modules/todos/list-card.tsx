@@ -1,12 +1,12 @@
 "use client";
+import { Stack } from "@/styled-system/jsx";
 import {
 	Card,
 	CardBody,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/card/card";
-import { Stack } from "@/styled-system/jsx";
+} from "@/ui/card";
 import type { ReactNode } from "react";
 
 type ListCardProps = {
