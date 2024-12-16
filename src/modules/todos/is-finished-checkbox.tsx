@@ -29,14 +29,10 @@ export const IsFinishedCheckbox = ({
 
 	return (
 		<Checkbox checked={isFinished} onCheckedChange={onCheckedChange}>
-			{(state) => (
-				<>
-					<CheckboxControl>
-						{state.isChecked ? <CheckIcon /> : null}
-					</CheckboxControl>
-					<CheckboxLabel srOnly>Is Finished</CheckboxLabel>
-				</>
-			)}
+			<CheckboxControl>
+				{state.isChecked ? <CheckIcon /> : null}
+			</CheckboxControl>
+			<CheckboxLabel srOnly>Is Finished</CheckboxLabel>
 		</Checkbox>
 	);
 };
