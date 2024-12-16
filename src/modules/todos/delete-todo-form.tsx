@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/Button/Button";
+import { Button } from "@/components/button/button";
 import { deleteTodo } from "@/server/todos";
 import { useEvent } from "@/utils/useEvent";
 import { useEffect } from "react";

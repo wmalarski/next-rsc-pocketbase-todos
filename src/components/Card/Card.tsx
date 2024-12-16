@@ -1,5 +1,5 @@
 "use client";
-import { createStyleContext } from "@/components/utils/createStyleContext";
+import { createStyleContext } from "@/components/utils/create-style-context";
 import { type HTMLStyledProps, styled } from "@/styled-system/jsx";
 import { card } from "@/styled-system/recipes";
 import { ark } from "@ark-ui/react";

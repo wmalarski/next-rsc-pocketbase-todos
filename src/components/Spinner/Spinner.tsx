@@ -1,5 +1,5 @@
 import { sva } from "@/styled-system/css";
-import styles from "./Spinner.module.css";
+import styles from "./spinner.module.css";
 
 const spinner = sva({
 	slots: ["root", "fragment"],

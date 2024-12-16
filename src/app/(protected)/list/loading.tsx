@@ -1,4 +1,4 @@
-import { Spinner } from "@/components/Spinner/Spinner";
+import { Spinner } from "@/components/spinner/spinner";
 import { flex } from "@/styled-system/patterns";
 
 export default function Loading() {

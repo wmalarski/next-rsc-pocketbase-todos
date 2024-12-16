@@ -1,6 +1,6 @@
 "use client";
-import { BasicAlert } from "@/components/Alert/Alert";
-import { Button } from "@/components/Button/Button";
+import { BasicAlert } from "@/components/alert/alert";
+import { Button } from "@/components/button/button";
 import {
 	Editable,
 	EditableArea,
@@ -11,8 +11,8 @@ import {
 	EditableLabel,
 	EditablePreview,
 	EditableSubmitTrigger,
-} from "@/components/Editable/Editable";
-import { Label } from "@/components/Label/Label";
+} from "@/components/editable/editable";
+import { Label } from "@/components/label/label";
 import { updateTodo } from "@/server/todos";
 import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";

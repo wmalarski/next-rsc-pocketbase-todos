@@ -1,7 +1,7 @@
 import { type HTMLStyledProps, styled } from "@/styled-system/jsx";
 import { checkbox } from "@/styled-system/recipes";
 import { Checkbox as ArkCheckbox } from "@ark-ui/react";
-import { createStyleContext } from "../utils/createStyleContext";
+import { createStyleContext } from "../utils/create-style-context";
 
 const { withProvider, withContext } = createStyleContext(checkbox);
 

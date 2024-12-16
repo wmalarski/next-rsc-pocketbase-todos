@@ -1,5 +1,5 @@
 import { container } from "@/styled-system/patterns";
-import { SignUpForm } from "../../../modules/auth/SignUpForm";
+import { SignUpForm } from "../../../modules/auth/sign-up-form";
 
 export default function SignUpPage() {
 	return (

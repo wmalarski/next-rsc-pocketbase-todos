@@ -1,8 +1,8 @@
 "use client";
-import { BasicAlert } from "@/components/Alert/Alert";
-import { Button } from "@/components/Button/Button";
-import { Input } from "@/components/Input/Input";
-import { Label } from "@/components/Label/Label";
+import { BasicAlert } from "@/components/alert/alert";
+import { Button } from "@/components/button/button";
+import { Input } from "@/components/input/input";
+import { Label } from "@/components/label/label";
 import { createTodo } from "@/server/todos";
 import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";

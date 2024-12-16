@@ -1,7 +1,7 @@
 import { type HTMLStyledProps, styled } from "@/styled-system/jsx";
 import { editable } from "@/styled-system/recipes";
 import { Editable as ArkEditable } from "@ark-ui/react";
-import { createStyleContext } from "../utils/createStyleContext";
+import { createStyleContext } from "../utils/create-style-context";
 
 const { withProvider, withContext } = createStyleContext(editable);
 
@@ -38,7 +38,6 @@ export {
 	Area,
 	CancelTrigger,
 	Control,
-	EditTrigger,
 	Editable,
 	EditableArea,
 	EditableCancelTrigger,
@@ -48,6 +47,7 @@ export {
 	EditableLabel,
 	EditablePreview,
 	EditableSubmitTrigger,
+	EditTrigger,
 	Input,
 	Label,
 	Preview,

@@ -1,10 +1,10 @@
-import { Link } from "@/components/Link/Link";
+import { Link } from "@/components/link/link";
 import { css } from "@/styled-system/css";
 import { flex } from "@/styled-system/patterns";
 import { paths } from "@/utils/paths";
 import type { ReactNode } from "react";
-import { SignOutForm } from "../../modules/auth/SignOutForm";
-import { Footer } from "../Footer/Footer";
+import { SignOutForm } from "../../modules/auth/sign-out-form";
+import { Footer } from "../../modules/common/footer";
 
 const ProtectedHeader = () => {
 	return (

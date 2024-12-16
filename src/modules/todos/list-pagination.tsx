@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/Button/Button";
-import { IconButton } from "@/components/IconButton/IconButton";
+import { Button } from "@/components/button/button";
+import { IconButton } from "@/components/icon-button/icon-button";
 import {
 	Pagination,
 	PaginationEllipsis,
@@ -8,7 +8,7 @@ import {
 	PaginationNextTrigger,
 	PaginationPrevTrigger,
 	type PaginationProps,
-} from "@/components/Pagination/Pagination";
+} from "@/components/pagination/pagination";
 import { paths } from "@/utils/paths";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";

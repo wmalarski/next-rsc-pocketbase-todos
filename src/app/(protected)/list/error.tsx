@@ -1,7 +1,7 @@
 "use client"; // Error components must be Client Components
 
-import { Button } from "@/components/Button/Button";
-import { Heading } from "@/components/Heading/Heading";
+import { Button } from "@/components/button/button";
+import { Heading } from "@/components/heading/heading";
 import { flex } from "@/styled-system/patterns";
 import { useEffect } from "react";
 

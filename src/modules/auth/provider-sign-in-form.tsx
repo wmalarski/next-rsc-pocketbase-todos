@@ -1,6 +1,6 @@
 "use client";
-import { BasicAlert } from "@/components/Alert/Alert";
-import { Button } from "@/components/Button/Button";
+import { BasicAlert } from "@/components/alert/alert";
+import { Button } from "@/components/button/button";
 import {
 	Card,
 	CardBody,
@@ -8,8 +8,8 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/Card/Card";
-import { Link } from "@/components/Link/Link";
+} from "@/components/card/card";
+import { Link } from "@/components/link/link";
 import { signInWithProviderAction } from "@/server/auth";
 import { Stack } from "@/styled-system/jsx";
 import { paths } from "@/utils/paths";

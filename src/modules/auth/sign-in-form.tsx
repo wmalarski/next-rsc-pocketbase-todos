@@ -1,6 +1,6 @@
 "use client";
-import { BasicAlert } from "@/components/Alert/Alert";
-import { Button } from "@/components/Button/Button";
+import { BasicAlert } from "@/components/alert/alert";
+import { Button } from "@/components/button/button";
 import {
 	Card,
 	CardBody,
@@ -8,41 +8,56 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/Card/Card";
-import { Input } from "@/components/Input/Input";
-import { Label } from "@/components/Label/Label";
-import { signUpAction } from "@/server/auth";
+} from "@/components/card/card";
+import { Input } from "@/components/input/input";
+import { Label } from "@/components/label/label";
+import { Link } from "@/components/link/link";
+import { signInWithPasswordAction } from "@/server/auth";
 import { Stack } from "@/styled-system/jsx";
+import { paths } from "@/utils/paths";
 import { useFormState, useFormStatus } from "react-dom";
 
-export const SignUpForm = () => {
-	const { pending } = useFormStatus();
+export const SignInForm = () => {
+	const [state, formAction] = useFormState(signInWithPasswordAction, {
+		success: false,
+	});
 
-	const [state, formAction] = useFormState(signUpAction, { success: false });
+	const { pending } = useFormStatus();
 
 	return (
 		<Card width="sm" asChild>
 			<form action={formAction}>
 				<CardHeader>
-					<CardTitle>Sign Up</CardTitle>
-					<CardDescription>Sign up using email and password</CardDescription>
+					<CardTitle>Sign In</CardTitle>
+					<CardDescription>Sign in using email and password</CardDescription>
 				</CardHeader>
 				<CardBody>
 					<Stack gap="4">
-						{state.error ? (
+						{state?.error ? (
 							<BasicAlert icon="error" title={state.error} />
+						) : null}
+						{state?.success ? (
+							<BasicAlert
+								icon="success"
+								title="Sign up successful"
+								description={
+									<Link href={paths.signIn} variant="link">
+										Go to sign in
+									</Link>
+								}
+							/>
 						) : null}
 						<Stack gap="1.5">
 							<Label htmlFor="email">Email</Label>
 							<Input
 								disabled={pending}
-								id="email"
 								name="email"
+								id="email"
+								type="email"
 								placeholder="Email"
 								required
-								type="email"
 							/>
-							{state.errors?.email ? (
+							{state?.errors?.email ? (
 								<BasicAlert icon="error" title={state.errors?.email} />
 							) : null}
 						</Stack>
@@ -55,28 +70,15 @@ export const SignUpForm = () => {
 								type="password"
 								required
 							/>
-							{state.errors?.password ? (
+							{state?.errors?.password ? (
 								<BasicAlert icon="error" title={state.errors.password} />
-							) : null}
-						</Stack>
-						<Stack gap="1.5">
-							<Label htmlFor="passwordConfirm">Confirm password</Label>
-							<Input
-								disabled={pending}
-								name="passwordConfirm"
-								id="passwordConfirm"
-								type="password"
-								required
-							/>
-							{state.errors?.passwordConfirm ? (
-								<BasicAlert icon="error" title={state.errors.passwordConfirm} />
 							) : null}
 						</Stack>
 					</Stack>
 				</CardBody>
 				<CardFooter gap="3">
 					<Button disabled={pending} type="submit">
-						Sign Up
+						Sign In
 					</Button>
 				</CardFooter>
 			</form>

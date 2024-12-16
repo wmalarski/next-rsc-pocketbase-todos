@@ -4,7 +4,7 @@ import { createServerClient } from "./server/pocketBase";
 import { paths } from "./utils/paths";
 
 export async function middleware(request: NextRequest) {
-	const cookiesStore = cookies();
+	const cookiesStore = await cookies();
 	const { authStore } = createServerClient(cookiesStore);
 
 	if (!authStore.isValid) {

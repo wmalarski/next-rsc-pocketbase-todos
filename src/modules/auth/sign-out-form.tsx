@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/Button/Button";
+import { Button } from "@/components/button/button";
 import { signOutAction } from "@/server/auth";
 import { useFormState, useFormStatus } from "react-dom";
 

@@ -5,7 +5,7 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/Card/Card";
+} from "@/components/card/card";
 import { Stack } from "@/styled-system/jsx";
 import type { ReactNode } from "react";
 

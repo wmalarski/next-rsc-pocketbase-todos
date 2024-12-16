@@ -1,7 +1,7 @@
-import { CreateTodoForm } from "@/modules/todos/CreateTodoForm";
-import { ListCard } from "@/modules/todos/ListCard";
-import { ListPagination } from "@/modules/todos/ListPagination";
-import { TodoListItem } from "@/modules/todos/TodoListItem";
+import { CreateTodoForm } from "@/modules/todos/create-todo-form";
+import { ListCard } from "@/modules/todos/list-card";
+import { ListPagination } from "@/modules/todos/list-pagination";
+import { TodoListItem } from "@/modules/todos/todo-list-item";
 import { listTodos } from "@/server/todos";
 import { container, flex } from "@/styled-system/patterns";
 import * as v from "valibot";

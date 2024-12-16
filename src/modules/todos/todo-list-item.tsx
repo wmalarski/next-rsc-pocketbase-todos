@@ -2,9 +2,9 @@
 import type { TodoModel } from "@/server/todos";
 import { css } from "@/styled-system/css";
 import { useState } from "react";
-import { DeleteTodoForm } from "./DeleteTodoForm";
-import { IsFinishedCheckbox } from "./IsFinishedCheckbox";
-import { UpdateTodoForm } from "./UpdateTodoForm";
+import { DeleteTodoForm } from "./delete-todo-form";
+import { IsFinishedCheckbox } from "./is-finished-checkbox";
+import { UpdateTodoForm } from "./update-todo-form";
 
 type TodoListItemProps = {
 	todo: TodoModel;

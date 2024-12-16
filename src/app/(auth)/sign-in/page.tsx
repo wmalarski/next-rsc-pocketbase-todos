@@ -1,6 +1,6 @@
 import { flex } from "@/styled-system/patterns";
-import { ProviderSignInForm } from "../../../modules/auth/ProviderSignInForm";
-import { SignInForm } from "../../../modules/auth/SignInForm";
+import { ProviderSignInForm } from "../../../modules/auth/provider-sign-in-form";
+import { SignInForm } from "../../../modules/auth/sign-in-form";
 
 export default function SignInPage() {
 	return (

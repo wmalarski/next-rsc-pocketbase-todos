@@ -4,7 +4,7 @@ import {
 	CheckboxControl,
 	CheckboxLabel,
 	type CheckboxProps,
-} from "@/components/Checkbox/Checkbox";
+} from "@/components/checkbox/checkbox";
 import { updateIsFinishedTodo } from "@/server/todos";
 import { CheckIcon } from "lucide-react";
 

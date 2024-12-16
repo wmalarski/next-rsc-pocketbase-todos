@@ -1,7 +1,7 @@
 import { type HTMLStyledProps, styled } from "@/styled-system/jsx";
 import { pagination } from "@/styled-system/recipes";
 import { Pagination as ArkPagination } from "@ark-ui/react";
-import { createStyleContext } from "../utils/createStyleContext";
+import { createStyleContext } from "../utils/create-style-context";
 
 const { withProvider, withContext } = createStyleContext(pagination);
 
