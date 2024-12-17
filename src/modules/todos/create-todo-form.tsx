@@ -4,8 +4,7 @@ import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";
 import { BasicAlert } from "@/ui/alert";
 import { Button } from "@/ui/button";
-import { Input } from "@/ui/input";
-import { Label } from "@/ui/label";
+import { Field } from "@/ui/field";
 import { useRef } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
@@ -29,11 +28,11 @@ export const CreateTodoForm = () => {
 		>
 			<Stack gap="4" flexGrow={1}>
 				{state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
-				<Stack gap="1.5">
-					<Label htmlFor="text" srOnly>
+				<Field.Root gap="1.5">
+					<Field.Label htmlFor="text" srOnly>
 						Text
-					</Label>
-					<Input
+					</Field.Label>
+					<Field.Input
 						disabled={pending}
 						name="text"
 						id="text"
@@ -43,7 +42,7 @@ export const CreateTodoForm = () => {
 					{state?.errors?.text ? (
 						<BasicAlert icon="error" title={state.errors.text} />
 					) : null}
-				</Stack>
+				</Field.Root>
 			</Stack>
 			<Button
 				variant="outline"

@@ -15,7 +15,6 @@ import {
 	EditablePreview,
 	EditableSubmitTrigger,
 } from "@/ui/editable";
-import { Label } from "@/ui/label";
 import { useRef, useState } from "react";
 import { useFormState } from "react-dom";
 
@@ -66,9 +65,7 @@ export const UpdateTodoForm = ({
 				>
 					{(state) => (
 						<>
-							<EditableLabel srOnly asChild>
-								<Label>Text</Label>
-							</EditableLabel>
+							<EditableLabel srOnly>Text</EditableLabel>
 							<EditableArea>
 								<EditableInput name="text" minLength={1} />
 								<EditablePreview
@@ -96,7 +93,7 @@ export const UpdateTodoForm = ({
 					)}
 				</Editable>
 				{state?.errors?.text ? (
-					<BasicAlert icon="error" title={state.errors.text.message} />
+					<BasicAlert icon="error" title={state.errors.text} />
 				) : null}
 			</Stack>
 			<Button

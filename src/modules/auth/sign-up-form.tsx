@@ -3,16 +3,8 @@ import { signUpAction } from "@/server/auth";
 import { Stack } from "@/styled-system/jsx";
 import { BasicAlert } from "@/ui/alert";
 import { Button } from "@/ui/button";
-import {
-	Card,
-	CardBody,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/ui/card";
-import { Input } from "@/ui/input";
-import { Label } from "@/ui/label";
+import { Card } from "@/ui/card";
+import { Field } from "@/ui/field";
 import { useFormState, useFormStatus } from "react-dom";
 
 export const SignUpForm = () => {
@@ -21,20 +13,20 @@ export const SignUpForm = () => {
 	const [state, formAction] = useFormState(signUpAction, { success: false });
 
 	return (
-		<Card width="sm" asChild>
+		<Card.Root width="sm" asChild>
 			<form action={formAction}>
-				<CardHeader>
-					<CardTitle>Sign Up</CardTitle>
-					<CardDescription>Sign up using email and password</CardDescription>
-				</CardHeader>
-				<CardBody>
+				<Card.Header>
+					<Card.Title>Sign Up</Card.Title>
+					<Card.Description>Sign up using email and password</Card.Description>
+				</Card.Header>
+				<Card.Body>
 					<Stack gap="4">
 						{state.error ? (
 							<BasicAlert icon="error" title={state.error} />
 						) : null}
-						<Stack gap="1.5">
-							<Label htmlFor="email">Email</Label>
-							<Input
+						<Field.Root gap="1.5">
+							<Field.Label htmlFor="email">Email</Field.Label>
+							<Field.Input
 								disabled={pending}
 								id="email"
 								name="email"
@@ -45,10 +37,10 @@ export const SignUpForm = () => {
 							{state.errors?.email ? (
 								<BasicAlert icon="error" title={state.errors?.email} />
 							) : null}
-						</Stack>
-						<Stack gap="1.5">
-							<Label htmlFor="password">Password</Label>
-							<Input
+						</Field.Root>
+						<Field.Root gap="1.5">
+							<Field.Label htmlFor="password">Password</Field.Label>
+							<Field.Input
 								disabled={pending}
 								name="password"
 								id="password"
@@ -58,10 +50,12 @@ export const SignUpForm = () => {
 							{state.errors?.password ? (
 								<BasicAlert icon="error" title={state.errors.password} />
 							) : null}
-						</Stack>
-						<Stack gap="1.5">
-							<Label htmlFor="passwordConfirm">Confirm password</Label>
-							<Input
+						</Field.Root>
+						<Field.Root gap="1.5">
+							<Field.Label htmlFor="passwordConfirm">
+								Confirm password
+							</Field.Label>
+							<Field.Input
 								disabled={pending}
 								name="passwordConfirm"
 								id="passwordConfirm"
@@ -71,15 +65,15 @@ export const SignUpForm = () => {
 							{state.errors?.passwordConfirm ? (
 								<BasicAlert icon="error" title={state.errors.passwordConfirm} />
 							) : null}
-						</Stack>
+						</Field.Root>
 					</Stack>
-				</CardBody>
-				<CardFooter gap="3">
+				</Card.Body>
+				<Card.Footer gap="3">
 					<Button disabled={pending} type="submit">
 						Sign Up
 					</Button>
-				</CardFooter>
+				</Card.Footer>
 			</form>
-		</Card>
+		</Card.Root>
 	);
 };

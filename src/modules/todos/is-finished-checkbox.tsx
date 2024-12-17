@@ -1,12 +1,6 @@
 "use client";
 import { updateIsFinishedTodo } from "@/server/todos";
-import {
-	Checkbox,
-	CheckboxControl,
-	CheckboxLabel,
-	type CheckboxProps,
-} from "@/ui/checkbox";
-import { CheckIcon } from "lucide-react";
+import { Checkbox, type CheckboxProps } from "@/ui/checkbox";
 
 type UpdateTodoFormProps = {
 	isFinished: boolean;
@@ -29,10 +23,7 @@ export const IsFinishedCheckbox = ({
 
 	return (
 		<Checkbox checked={isFinished} onCheckedChange={onCheckedChange}>
-			<CheckboxControl>
-				{state.isChecked ? <CheckIcon /> : null}
-			</CheckboxControl>
-			<CheckboxLabel srOnly>Is Finished</CheckboxLabel>
+			Is Finished
 		</Checkbox>
 	);
 };
