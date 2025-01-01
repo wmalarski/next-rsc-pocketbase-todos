@@ -5,13 +5,13 @@ import { flex } from "@/styled-system/patterns";
 import { BasicAlert } from "@/ui/alert";
 import { Button } from "@/ui/button";
 import { Field } from "@/ui/field";
-import { useRef } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useRef } from "react";
+import { useFormStatus } from "react-dom";
 
 export const CreateTodoForm = () => {
 	const formRef = useRef<HTMLFormElement>(null);
 
-	const [state, formAction] = useFormState(createTodo, { success: false });
+	const [state, formAction] = useActionState(createTodo, { success: false });
 
 	const { pending } = useFormStatus();
 

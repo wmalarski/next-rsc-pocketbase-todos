@@ -2,8 +2,8 @@
 import { deleteTodo } from "@/server/todos";
 import { Button } from "@/ui/button";
 import { useEvent } from "@/utils/useEvent";
-import { useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 
 type DeleteTodoFormProps = {
 	id: string;
@@ -16,7 +16,7 @@ export const DeleteTodoForm = ({
 	onFailure,
 	onSubmit,
 }: DeleteTodoFormProps) => {
-	const [state, formAction] = useFormState(deleteTodo, { success: false });
+	const [state, formAction] = useActionState(deleteTodo, { success: false });
 
 	const { pending } = useFormStatus();
 

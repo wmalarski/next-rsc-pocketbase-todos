@@ -7,10 +7,11 @@ import { Card } from "@/ui/card";
 import { Field } from "@/ui/field";
 import { Link } from "@/ui/link";
 import { paths } from "@/utils/paths";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 export const SignInForm = () => {
-	const [state, formAction] = useFormState(signInWithPasswordAction, {
+	const [state, formAction] = useActionState(signInWithPasswordAction, {
 		success: false,
 	});
 

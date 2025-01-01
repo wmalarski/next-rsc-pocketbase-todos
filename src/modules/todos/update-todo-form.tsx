@@ -5,8 +5,7 @@ import { flex } from "@/styled-system/patterns";
 import { BasicAlert } from "@/ui/alert";
 import { Button } from "@/ui/button";
 import { Editable } from "@/ui/editable";
-import { useRef, useState } from "react";
-import { useFormState } from "react-dom";
+import { useActionState, useRef, useState } from "react";
 
 type UpdateTodoFormProps = {
 	id: string;
@@ -21,7 +20,7 @@ export const UpdateTodoForm = ({
 }: UpdateTodoFormProps) => {
 	const formRef = useRef<HTMLFormElement>(null);
 
-	const [state, formAction] = useFormState(updateTodo, { success: false });
+	const [state, formAction] = useActionState(updateTodo, { success: false });
 
 	const [isDirty, setIsDirty] = useState(false);
 

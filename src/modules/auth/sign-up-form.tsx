@@ -5,12 +5,13 @@ import { BasicAlert } from "@/ui/alert";
 import { Button } from "@/ui/button";
 import { Card } from "@/ui/card";
 import { Field } from "@/ui/field";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 export const SignUpForm = () => {
 	const { pending } = useFormStatus();
 
-	const [state, formAction] = useFormState(signUpAction, { success: false });
+	const [state, formAction] = useActionState(signUpAction, { success: false });
 
 	return (
 		<Card.Root width="sm" asChild>

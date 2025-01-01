@@ -1,21 +1,13 @@
-import { css } from "@/styled-system/css";
-import { Button } from "@/ui/button";
-import { Link } from "@/ui/link";
-import { paths } from "@/utils/paths";
-import { Footer } from "../modules/common/footer";
+import { Footer } from "@/modules/common/footer";
+import { NavigationBar } from "@/modules/common/navigation-bar";
+import { flex } from "@/styled-system/patterns";
 
-export default function Home() {
+export default function HomePage() {
 	return (
 		<main>
-			<div>
-				<div className={css({ fontSize: "2xl", fontWeight: "bold" })}>
-					Hello 🐼!
-				</div>
-				<Button>Click me</Button>
-				<Link href={paths.signIn}>Sign In</Link>
-				<Link href={paths.signUp}>Sign Up</Link>
-				<Link href={paths.list()}>Todo list</Link>
-			</div>
+			<header className={flex({ justifyContent: "center", pb: 4 })}>
+				<NavigationBar />
+			</header>
 			<Footer />
 		</main>
 	);

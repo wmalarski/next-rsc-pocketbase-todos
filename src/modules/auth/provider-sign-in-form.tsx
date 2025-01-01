@@ -6,10 +6,11 @@ import { Button } from "@/ui/button";
 import { Card } from "@/ui/card";
 import { Link } from "@/ui/link";
 import { paths } from "@/utils/paths";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 export const ProviderSignInForm = () => {
-	const [state, formAction] = useFormState(signInWithProviderAction, {
+	const [state, formAction] = useActionState(signInWithProviderAction, {
 		success: false,
 	});
 

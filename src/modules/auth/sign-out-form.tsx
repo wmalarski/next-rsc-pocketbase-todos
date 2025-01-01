@@ -1,10 +1,11 @@
 "use client";
 import { signOutAction } from "@/server/auth";
 import { Button } from "@/ui/button";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 export const SignOutForm = () => {
-	const [, formAction] = useFormState(signOutAction, { success: false });
+	const [, formAction] = useActionState(signOutAction, { success: false });
 
 	const { pending } = useFormStatus();
 
