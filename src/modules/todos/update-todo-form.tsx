@@ -4,17 +4,7 @@ import { Stack } from "@/styled-system/jsx";
 import { flex } from "@/styled-system/patterns";
 import { BasicAlert } from "@/ui/alert";
 import { Button } from "@/ui/button";
-import {
-	Editable,
-	EditableArea,
-	EditableCancelTrigger,
-	EditableControl,
-	EditableEditTrigger,
-	EditableInput,
-	EditableLabel,
-	EditablePreview,
-	EditableSubmitTrigger,
-} from "@/ui/editable";
+import { Editable } from "@/ui/editable";
 import { useRef, useState } from "react";
 import { useFormState } from "react-dom";
 
@@ -59,39 +49,39 @@ export const UpdateTodoForm = ({
 			<input type="hidden" name="id" value={id} />
 			<Stack gap="1.5" flexGrow={1}>
 				{state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
-				<Editable
+				<Editable.Root
 					defaultValue={initialText}
-					activationMode={isFinished ? "none" : "focus"}
+					activationMode={isFinished ? "click" : "focus"}
 				>
-					{(state) => (
-						<>
-							<EditableLabel srOnly>Text</EditableLabel>
-							<EditableArea>
-								<EditableInput name="text" minLength={1} />
-								<EditablePreview
-									textDecoration={isFinished ? "line-through" : undefined}
-									opacity={isFinished ? 0.8 : 1}
-								/>
-							</EditableArea>
-							<EditableControl>
-								{state.isEditing ? (
+					<Editable.Label srOnly>Text</Editable.Label>
+					<Editable.Area>
+						<Editable.Input name="text" minLength={1} />
+						<Editable.Preview
+							textDecoration={isFinished ? "line-through" : undefined}
+							opacity={isFinished ? 0.8 : 1}
+						/>
+					</Editable.Area>
+					<Editable.Control>
+						<Editable.Context>
+							{(state) =>
+								state.editing ? (
 									<>
-										<EditableSubmitTrigger asChild>
+										<Editable.SubmitTrigger asChild>
 											<Button variant="link">Save</Button>
-										</EditableSubmitTrigger>
-										<EditableCancelTrigger asChild>
+										</Editable.SubmitTrigger>
+										<Editable.CancelTrigger asChild>
 											<Button variant="link">Cancel</Button>
-										</EditableCancelTrigger>
+										</Editable.CancelTrigger>
 									</>
 								) : isFinished ? null : (
-									<EditableEditTrigger asChild>
+									<Editable.EditTrigger asChild>
 										<Button variant="link">Edit</Button>
-									</EditableEditTrigger>
-								)}
-							</EditableControl>
-						</>
-					)}
-				</Editable>
+									</Editable.EditTrigger>
+								)
+							}
+						</Editable.Context>
+					</Editable.Control>
+				</Editable.Root>
 				{state?.errors?.text ? (
 					<BasicAlert icon="error" title={state.errors.text} />
 				) : null}

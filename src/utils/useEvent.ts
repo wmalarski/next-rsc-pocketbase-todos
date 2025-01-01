@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const useEvent = <T extends (...args: any[]) => any>(
 	callback: T | undefined,
 ): T => {
