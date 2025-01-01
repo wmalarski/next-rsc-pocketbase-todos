@@ -11,10 +11,10 @@ export default function SignInPage() {
 				flexDirection: "column",
 				alignItems: "center",
 				gap: "4",
-				// md: {
-				// 	alignItems: "unset",
-				// 	flexDirection: "row",
-				// },
+				md: {
+					alignItems: "unset",
+					flexDirection: "row",
+				},
 			})}
 		>
 			<SignInForm />

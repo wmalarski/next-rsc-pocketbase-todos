@@ -5,7 +5,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
 import * as v from "valibot";
-import { PB_COOKIE_NAME, createServerClient } from "./pocketbase";
+import { createServerClient } from "./pocketbase";
+import { exportSessionToCookie } from "./session";
 import {
 	type ActionResult,
 	createRequestError,
@@ -38,7 +39,7 @@ export async function signInWithPasswordAction(
 			.authWithPassword(result.output.email, result.output.password);
 
 		if (response?.token) {
-			cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+			exportSessionToCookie({ client: pb, cookies: cookiesStore });
 			isSuccess = true;
 		}
 	} catch (error) {
@@ -89,7 +90,7 @@ export async function signInWithProviderAction(
 		console.log(pb.authStore.model?.id);
 
 		if (response?.token) {
-			cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+			exportSessionToCookie({ client: pb, cookies: cookiesStore });
 			isSuccess = true;
 		}
 	} catch (error) {
@@ -157,10 +158,10 @@ export async function signOutAction(
 ): Promise<ActionResult> {
 	const cookiesStore = await cookies();
 
-	const pb = createServerClient(cookiesStore);
-	pb.authStore.clear();
+	const client = createServerClient(cookiesStore);
+	client.authStore.clear();
 
-	cookiesStore.set(PB_COOKIE_NAME, pb.authStore.exportToCookie());
+	exportSessionToCookie({ client, cookies: cookiesStore });
 
 	redirect(paths.signIn);
 }

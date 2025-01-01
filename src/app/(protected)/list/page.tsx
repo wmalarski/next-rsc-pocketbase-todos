@@ -4,6 +4,7 @@ import { ListPagination } from "@/modules/todos/list-pagination";
 import { TodoListItem } from "@/modules/todos/todo-list-item";
 import { listTodos } from "@/server/todos";
 import { container, flex } from "@/styled-system/patterns";
+import type { AppPageProps } from "@/utils/types";
 import * as v from "valibot";
 
 type TodoListProps = {
@@ -29,13 +30,14 @@ const TodoList = async ({ page }: TodoListProps) => {
 	);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default async function ListPage(props: any) {
+export default async function ListPage(props: AppPageProps) {
 	const schema = v.object({
-		searchParams: v.object({ page: v.pipe(v.unknown(), v.transform(Number)) }),
+		page: v.optional(v.pipe(v.unknown(), v.transform(Number)), 0),
 	});
 
-	const parsed = await v.parseAsync(schema, props);
+	const parsed = await v.parseAsync(schema, await props.searchParams);
+
+	console.log("parsed", parsed);
 
 	return (
 		<div
@@ -47,7 +49,7 @@ export default async function ListPage(props: any) {
 		>
 			<ListCard>
 				<CreateTodoForm />
-				<TodoList page={parsed.searchParams.page} />
+				<TodoList page={parsed.page} />
 			</ListCard>
 		</div>
 	);
