@@ -6,7 +6,13 @@ import { Footer } from "../../modules/common/footer";
 
 const ProtectedHeader = () => {
 	return (
-		<header className={grid({ gridTemplateColumns: "1fr auto" })}>
+		<header
+			className={grid({
+				gridTemplateColumns: "1fr auto",
+				alignItems: "center",
+				pr: 4,
+			})}
+		>
 			<NavigationBar />
 			<SignOutForm />
 		</header>

@@ -37,8 +37,6 @@ export default async function ListPage(props: AppPageProps) {
 
 	const parsed = await v.parseAsync(schema, await props.searchParams);
 
-	console.log("parsed", parsed);
-
 	return (
 		<div
 			className={container({
