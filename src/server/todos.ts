@@ -1,4 +1,5 @@
 "use server";
+
 import { paths } from "@/utils/paths";
 import { decode } from "decode-formdata";
 import { revalidatePath } from "next/cache";
@@ -6,7 +7,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
 import * as v from "valibot";
-import { createServerClient } from "./pocketBase";
+import { createServerClient } from "./pocketbase";
 import {
 	type ActionResult,
 	createRequestError,

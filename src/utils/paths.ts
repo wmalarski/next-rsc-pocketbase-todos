@@ -1,4 +1,4 @@
-import { buildSearchParams } from "./searchParams";
+import { buildSearchParams } from "./search-params";
 
 export const paths = {
 	home: "/",

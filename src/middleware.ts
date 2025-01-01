@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "./server/pocketBase";
+import { createServerClient } from "./server/pocketbase";
 import { paths } from "./utils/paths";
 
 export async function middleware(request: NextRequest) {

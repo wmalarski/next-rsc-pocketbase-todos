@@ -1,6 +1,8 @@
+"use server";
+
 import type { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import PocketBase from "pocketbase";
-import { serverEnv } from "./serverEnv";
+import { serverEnv } from "./server-env";
 
 export const PB_COOKIE_NAME = "pb_auth";
 

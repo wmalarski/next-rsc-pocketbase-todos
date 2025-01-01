@@ -1,3 +1,5 @@
+"use server";
+
 import * as v from "valibot";
 
 const envSchema = v.object({

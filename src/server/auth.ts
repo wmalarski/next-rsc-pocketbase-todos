@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientResponseError } from "pocketbase";
 import * as v from "valibot";
-import { PB_COOKIE_NAME, createServerClient } from "./pocketBase";
+import { PB_COOKIE_NAME, createServerClient } from "./pocketbase";
 import {
 	type ActionResult,
 	createRequestError,
