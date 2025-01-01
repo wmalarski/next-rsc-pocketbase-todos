@@ -19,10 +19,12 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
 					{(pagination) =>
 						pagination.pages.map((page, index) =>
 							page.type === "page" ? (
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								<StyledPagination.Item key={index} {...page} asChild>
 									<Button variant="outline">{page.value}</Button>
 								</StyledPagination.Item>
 							) : (
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								<StyledPagination.Ellipsis key={index} index={index}>
 									&#8230;
 								</StyledPagination.Ellipsis>

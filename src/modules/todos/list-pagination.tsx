@@ -1,16 +1,6 @@
 "use client";
-import { Button } from "@/ui/button";
-import { IconButton } from "@/ui/icon-button";
-import {
-	Pagination,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationNextTrigger,
-	PaginationPrevTrigger,
-	type PaginationProps,
-} from "@/ui/pagination";
+import { Pagination, type PaginationProps } from "@/ui/pagination";
 import { paths } from "@/utils/paths";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type ListPaginationProps = {
@@ -38,33 +28,6 @@ export const ListPagination = ({
 			defaultPage={page}
 			justifyContent="center"
 			onPageChange={onPageChange}
-		>
-			{({ pages }) => (
-				<>
-					<PaginationPrevTrigger asChild>
-						<IconButton variant="ghost" aria-label="Next Page">
-							<ChevronLeftIcon />
-						</IconButton>
-					</PaginationPrevTrigger>
-
-					{pages.map((page, index) =>
-						page.type === "page" ? (
-							<PaginationItem key={index} {...page} asChild>
-								<Button variant="outline">{page.value}</Button>
-							</PaginationItem>
-						) : (
-							<PaginationEllipsis key={index} index={index}>
-								&#8230;
-							</PaginationEllipsis>
-						),
-					)}
-					<PaginationNextTrigger asChild>
-						<IconButton variant="ghost" aria-label="Next Page">
-							<ChevronRightIcon />
-						</IconButton>
-					</PaginationNextTrigger>
-				</>
-			)}
-		</Pagination>
+		/>
 	);
 };
