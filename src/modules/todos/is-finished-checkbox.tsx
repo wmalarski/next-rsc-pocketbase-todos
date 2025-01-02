@@ -22,8 +22,10 @@ export const IsFinishedCheckbox = ({
 	};
 
 	return (
-		<Checkbox checked={isFinished} onCheckedChange={onCheckedChange}>
-			Is Finished
-		</Checkbox>
+		<Checkbox
+			checked={isFinished}
+			onCheckedChange={onCheckedChange}
+			aria-label="Is Finished"
+		/>
 	);
 };

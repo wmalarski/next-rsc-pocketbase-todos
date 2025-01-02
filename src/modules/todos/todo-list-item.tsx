@@ -1,7 +1,8 @@
 "use client";
 import type { TodoModel } from "@/server/todos";
 import { css } from "@/styled-system/css";
-import { useState } from "react";
+import { Spinner } from "@/ui/spinner";
+import { type PropsWithChildren, useState } from "react";
 import { DeleteTodoForm } from "./delete-todo-form";
 import { IsFinishedCheckbox } from "./is-finished-checkbox";
 import { UpdateTodoForm } from "./update-todo-form";
@@ -24,14 +25,7 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
 	};
 
 	return (
-		<li
-			className={css({
-				gap: 3,
-				alignItems: "center",
-				minH: 14,
-				display: shouldHide ? "none" : "flex",
-			})}
-		>
+		<TodoListItemContainer isHidden={shouldHide}>
 			<IsFinishedCheckbox
 				id={todo.id}
 				isFinished={isFinished}
@@ -47,6 +41,43 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
 				onFailure={onDeleteFailure}
 				onSubmit={onDeleteSubmit}
 			/>
+		</TodoListItemContainer>
+	);
+};
+
+type TodoListItemPlaceholderProps = {
+	text: string;
+};
+
+export const TodoListItemPlaceholder = ({
+	text,
+}: TodoListItemPlaceholderProps) => {
+	return (
+		<TodoListItemContainer>
+			<Spinner />
+			{text}
+		</TodoListItemContainer>
+	);
+};
+
+type TodoListItemContainerProps = PropsWithChildren<{
+	isHidden?: boolean;
+}>;
+
+const TodoListItemContainer = ({
+	children,
+	isHidden,
+}: TodoListItemContainerProps) => {
+	return (
+		<li
+			className={css({
+				gap: 3,
+				alignItems: "center",
+				minH: 14,
+				display: isHidden ? "none" : "flex",
+			})}
+		>
+			{children}
 		</li>
 	);
 };
