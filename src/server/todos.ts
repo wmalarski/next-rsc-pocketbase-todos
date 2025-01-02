@@ -11,6 +11,7 @@ import { createServerClient } from "./pocketbase";
 import {
 	type ActionResult,
 	createRequestError,
+	delayResponse,
 	parseValibotIssues,
 } from "./utils";
 
@@ -28,22 +29,6 @@ export type TodoModel = {
 	user: string;
 };
 
-type ListTodosArgs = {
-	page: number;
-	perPage?: number;
-};
-
-export async function listTodos({ page, perPage }: ListTodosArgs) {
-	const cookiesStore = await cookies();
-	const pb = createServerClient(cookiesStore);
-
-	return pb
-		.collection(TODOS_COLLECTION)
-		.getList<TodoModel>(page, perPage || TODOS_PER_PAGE, {
-			sort: "created",
-		});
-}
-
 const createAuthorizedServerClient = async () => {
 	const cookiesStore = await cookies();
 	const pb = createServerClient(cookiesStore);
@@ -55,6 +40,23 @@ const createAuthorizedServerClient = async () => {
 
 	return { pb, user };
 };
+
+type ListTodosArgs = {
+	page: number;
+	perPage?: number;
+};
+
+export async function listTodos({ page, perPage }: ListTodosArgs) {
+	const { pb } = await createAuthorizedServerClient();
+
+	const result = await pb
+		.collection(TODOS_COLLECTION)
+		.getList<TodoModel>(page, perPage || TODOS_PER_PAGE, {
+			sort: "created",
+		});
+
+	return delayResponse(result);
+}
 
 export async function createTodo(
 	_prevState: ActionResult,
@@ -79,7 +81,7 @@ export async function createTodo(
 
 		revalidatePath(paths.list());
 
-		return { success: true };
+		return delayResponse({ success: true });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
 			return { errors: error.data.data, success: false };
@@ -109,7 +111,7 @@ export async function deleteTodo(
 
 		revalidatePath(paths.list());
 
-		return { success: true };
+		return delayResponse({ success: true });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
 			return { errors: error.data.data, success: false };
@@ -141,7 +143,7 @@ export async function updateTodo(
 
 		revalidatePath(paths.list());
 
-		return { success: true };
+		return delayResponse({ success: true });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
 			return { errors: error.data.data, success: false };
@@ -177,7 +179,7 @@ export async function updateIsFinishedTodo(
 
 		revalidatePath(paths.list());
 
-		return { success: true };
+		return delayResponse({ success: true });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
 			return { errors: error.data.data, success: false };

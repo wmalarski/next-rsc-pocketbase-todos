@@ -25,3 +25,7 @@ export const parseValibotIssues = (
 		success: false,
 	};
 };
+
+export const delayResponse = <T>(data: T) => {
+	return new Promise<T>((resolve) => setTimeout(() => resolve(data), 500));
+};
