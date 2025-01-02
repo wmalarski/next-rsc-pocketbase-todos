@@ -1,8 +1,13 @@
 "use client";
-import type { TodoModel } from "@/server/todos";
+import { deleteTodo, type TodoModel } from "@/server/todos";
 import { css } from "@/styled-system/css";
 import { Spinner } from "@/ui/spinner";
-import { type PropsWithChildren, useState } from "react";
+import {
+	type PropsWithChildren,
+	useActionState,
+	useOptimistic,
+	useState,
+} from "react";
 import { DeleteTodoForm } from "./delete-todo-form";
 import { IsFinishedCheckbox } from "./is-finished-checkbox";
 import { UpdateTodoForm } from "./update-todo-form";
@@ -14,14 +19,15 @@ type TodoListItemProps = {
 export const TodoListItem = ({ todo }: TodoListItemProps) => {
 	const [isFinished, setIsFinished] = useState(todo.isFinished);
 
-	const [shouldHide, setShouldHide] = useState(false);
+	const [_deleteState, deleteTodoAction] = useActionState(deleteTodo, {
+		success: false,
+	});
 
-	const onDeleteSubmit = () => {
-		setShouldHide(true);
-	};
+	const [shouldHide, optimisticHideTodo] = useOptimistic(false, () => true);
 
-	const onDeleteFailure = () => {
-		setShouldHide(false);
+	const onDeleteSubmit = async (formData: FormData) => {
+		optimisticHideTodo({});
+		deleteTodoAction(formData);
 	};
 
 	return (
@@ -36,11 +42,7 @@ export const TodoListItem = ({ todo }: TodoListItemProps) => {
 				initialText={todo.text}
 				isFinished={isFinished}
 			/>
-			<DeleteTodoForm
-				id={todo.id}
-				onFailure={onDeleteFailure}
-				onSubmit={onDeleteSubmit}
-			/>
+			<DeleteTodoForm id={todo.id} onSubmit={onDeleteSubmit} />
 		</TodoListItemContainer>
 	);
 };
