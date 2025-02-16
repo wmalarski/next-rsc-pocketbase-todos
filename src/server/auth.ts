@@ -10,7 +10,7 @@ import { exportSessionToCookie } from "./session";
 import {
 	type ActionResult,
 	createRequestError,
-	parseClientError,
+	handleAction,
 	parseValibotIssues,
 } from "./utils";
 
@@ -112,46 +112,29 @@ export async function signUpAction(
 	_prevState: ActionResult,
 	formData: FormData,
 ): Promise<ActionResult> {
-	const result = await v.safeParseAsync(
-		v.object({
+	return handleAction({
+		data: decode(formData),
+		schema: v.object({
 			email: v.pipe(v.string(), v.email()),
 			password: v.string(),
 			passwordConfirm: v.string(),
 		}),
-		decode(formData),
-	);
+		handler: async (args) => {
+			const cookiesStore = await cookies();
+			const pb = createServerClient(cookiesStore);
 
-	if (!result.success) {
-		return parseValibotIssues(result.issues);
-	}
+			await pb.collection(USERS_COLLECTION).create({
+				email: args.email,
+				password: args.password,
+				passwordConfirm: args.passwordConfirm,
+				username: args.email,
+			});
 
-	const cookiesStore = await cookies();
-	const pb = createServerClient(cookiesStore);
+			await pb.collection(USERS_COLLECTION).requestVerification(args.email);
 
-	try {
-		const createResponse = await pb.collection(USERS_COLLECTION).create({
-			email: result.output.email,
-			password: result.output.password,
-			passwordConfirm: result.output.passwordConfirm,
-			username: result.output.email,
-		});
-
-		console.error("Response", createResponse);
-
-		const verificationResponse = await pb
-			.collection(USERS_COLLECTION)
-			.requestVerification(result.output.email);
-
-		console.error("Response", verificationResponse);
-
-		return { success: true, data: {} };
-	} catch (error) {
-		if (error instanceof ClientResponseError) {
-			return parseClientError(error);
-		}
-	}
-
-	return createRequestError();
+			return { success: true, data: {} };
+		},
+	});
 }
 
 export async function signOutAction(
