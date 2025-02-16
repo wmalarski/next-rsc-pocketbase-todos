@@ -12,6 +12,7 @@ export const SignUpForm = () => {
 	const { pending } = useFormStatus();
 
 	const [state, formAction] = useActionState(signUpAction, { success: false });
+	const errorState = state.success ? undefined : state;
 
 	return (
 		<Card.Root width="sm" asChild>
@@ -22,8 +23,8 @@ export const SignUpForm = () => {
 				</Card.Header>
 				<Card.Body>
 					<Stack gap="4">
-						{state.error ? (
-							<BasicAlert icon="error" title={state.error} />
+						{errorState?.error ? (
+							<BasicAlert icon="error" title={errorState.error} />
 						) : null}
 						<Field.Root gap="1.5">
 							<Field.Label htmlFor="email">Email</Field.Label>
@@ -35,8 +36,8 @@ export const SignUpForm = () => {
 								required
 								type="email"
 							/>
-							{state.errors?.email ? (
-								<BasicAlert icon="error" title={state.errors?.email} />
+							{errorState?.errors?.email ? (
+								<BasicAlert icon="error" title={errorState.errors?.email} />
 							) : null}
 						</Field.Root>
 						<Field.Root gap="1.5">
@@ -48,8 +49,8 @@ export const SignUpForm = () => {
 								type="password"
 								required
 							/>
-							{state.errors?.password ? (
-								<BasicAlert icon="error" title={state.errors.password} />
+							{errorState?.errors?.password ? (
+								<BasicAlert icon="error" title={errorState.errors.password} />
 							) : null}
 						</Field.Root>
 						<Field.Root gap="1.5">
@@ -63,8 +64,11 @@ export const SignUpForm = () => {
 								type="password"
 								required
 							/>
-							{state.errors?.passwordConfirm ? (
-								<BasicAlert icon="error" title={state.errors.passwordConfirm} />
+							{errorState?.errors?.passwordConfirm ? (
+								<BasicAlert
+									icon="error"
+									title={errorState.errors.passwordConfirm}
+								/>
 							) : null}
 						</Field.Root>
 					</Stack>

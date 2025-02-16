@@ -12,6 +12,7 @@ import {
 	type ActionResult,
 	createRequestError,
 	delayResponse,
+	parseClientError,
 	parseValibotIssues,
 } from "./utils";
 
@@ -81,10 +82,10 @@ export async function createTodo(
 
 		revalidatePath(paths.list());
 
-		return delayResponse({ success: true });
+		return delayResponse({ success: true, data: {} });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data, success: false };
+			return parseClientError(error);
 		}
 	}
 
@@ -111,10 +112,10 @@ export async function deleteTodo(
 
 		revalidatePath(paths.list());
 
-		return delayResponse({ success: true });
+		return delayResponse({ success: true, data: {} });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data, success: false };
+			return parseClientError(error);
 		}
 	}
 
@@ -143,10 +144,10 @@ export async function updateTodo(
 
 		revalidatePath(paths.list());
 
-		return delayResponse({ success: true });
+		return delayResponse({ success: true, data: {} });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data, success: false };
+			return parseClientError(error);
 		}
 	}
 
@@ -179,10 +180,10 @@ export async function updateIsFinishedTodo(
 
 		revalidatePath(paths.list());
 
-		return delayResponse({ success: true });
+		return delayResponse({ success: true, data: {} });
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data, success: false };
+			return parseClientError(error);
 		}
 	}
 

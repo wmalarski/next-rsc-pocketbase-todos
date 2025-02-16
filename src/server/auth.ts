@@ -10,6 +10,7 @@ import { exportSessionToCookie } from "./session";
 import {
 	type ActionResult,
 	createRequestError,
+	parseClientError,
 	parseValibotIssues,
 } from "./utils";
 
@@ -143,10 +144,10 @@ export async function signUpAction(
 
 		console.error("Response", verificationResponse);
 
-		return { success: true };
+		return { success: true, data: {} };
 	} catch (error) {
 		if (error instanceof ClientResponseError) {
-			return { errors: error.data.data, success: false };
+			return parseClientError(error);
 		}
 	}
 

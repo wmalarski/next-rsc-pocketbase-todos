@@ -10,7 +10,8 @@
 		"format-and-lint": "biome check .",
 		"format-and-lint:fix": "biome check . --write",
 		"tsc": "tsc --noEmit",
-		"pb": "./backend/pocketbase.exe serve"
+		"pb:win": "./backend/pocketbase.exe serve",
+		"pb:linux": "./backend/pocketbase serve"
 	},
 	"dependencies": {
 		"@ark-ui/react": "^4.9.1",

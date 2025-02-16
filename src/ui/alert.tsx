@@ -30,7 +30,7 @@ export const BasicAlert = ({
 }: BasicAlertProps) => {
 	const Icon = ICON_MAP[icon];
 	return (
-		<StyledAlert.Root {...props}>
+		<StyledAlert.Root display="flex" gap={2} flexDirection="row" {...props}>
 			<StyledAlert.Icon asChild>
 				<Icon />
 			</StyledAlert.Icon>

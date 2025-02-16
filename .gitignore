@@ -41,3 +41,5 @@ next-env.d.ts
 # pb
 /backend/pb_data
 /backend/*.old
+/backend/pocketbase
+/backend/pocketbase_*

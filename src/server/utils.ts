@@ -1,3 +1,4 @@
+import type { ClientResponseError } from "pocketbase";
 import type * as v from "valibot";
 
 export const createRequestError = (): ActionResult => {
@@ -5,12 +6,19 @@ export const createRequestError = (): ActionResult => {
 };
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export type ActionResult<T = any> = {
-	data?: T;
+export type SuccessResult<T = any> = {
+	data: T;
+	success: true;
+};
+
+export type FailureResult = {
 	error?: string;
 	errors?: Record<string, string>;
-	success: boolean;
+	success: false;
 };
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export type ActionResult<T = any> = SuccessResult<T> | FailureResult;
 
 export const parseValibotIssues = (
 	issues: v.BaseIssue<unknown>[],
@@ -22,6 +30,21 @@ export const parseValibotIssues = (
 				issue.message,
 			]),
 		),
+		success: false,
+	};
+};
+
+type ErrorData = {
+	[key: string]: { code: string; message: string };
+};
+
+export const parseClientError = (error: ClientResponseError): ActionResult => {
+	const data: ErrorData = error.data.data;
+	return {
+		errors: Object.fromEntries(
+			Object.entries(data).map(([key, value]) => [key, value?.message]),
+		),
+		error: error.data.message ?? error.message,
 		success: false,
 	};
 };
