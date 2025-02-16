@@ -6,7 +6,7 @@ import {
 	TodoListItem,
 	TodoListItemPlaceholder,
 } from "@/modules/todos/todo-list-item";
-import { createTodo, type TodoModel } from "@/server/todos";
+import { type TodoModel, createTodo } from "@/server/todos";
 import { flex } from "@/styled-system/patterns";
 import type { ListResult } from "pocketbase";
 import { Fragment, useActionState, useOptimistic } from "react";

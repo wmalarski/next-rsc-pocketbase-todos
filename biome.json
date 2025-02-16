@@ -6,6 +6,9 @@
 	"formatter": {
 		"enabled": true
 	},
+	"files": {
+		"ignore": ["./backend"]
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {

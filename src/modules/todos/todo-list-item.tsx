@@ -1,5 +1,5 @@
 "use client";
-import { deleteTodo, type TodoModel } from "@/server/todos";
+import { type TodoModel, deleteTodo } from "@/server/todos";
 import { css } from "@/styled-system/css";
 import { Spinner } from "@/ui/spinner";
 import {
