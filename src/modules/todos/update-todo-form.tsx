@@ -21,6 +21,7 @@ export const UpdateTodoForm = ({
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const [state, formAction] = useActionState(updateTodo, { success: false });
+	const errorState = state.success ? undefined : state;
 
 	const [isDirty, setIsDirty] = useState(false);
 
@@ -47,7 +48,9 @@ export const UpdateTodoForm = ({
 		>
 			<input type="hidden" name="id" value={id} />
 			<Stack gap="1.5" flexGrow={1}>
-				{state?.error ? <BasicAlert icon="error" title={state.error} /> : null}
+				{errorState?.error ? (
+					<BasicAlert icon="error" title={errorState.error} />
+				) : null}
 				<Editable.Root
 					defaultValue={initialText}
 					activationMode={isFinished ? "click" : "focus"}
@@ -81,8 +84,8 @@ export const UpdateTodoForm = ({
 						</Editable.Context>
 					</Editable.Control>
 				</Editable.Root>
-				{state?.errors?.text ? (
-					<BasicAlert icon="error" title={state.errors.text} />
+				{errorState?.errors?.text ? (
+					<BasicAlert icon="error" title={errorState.errors.text} />
 				) : null}
 			</Stack>
 			<Button

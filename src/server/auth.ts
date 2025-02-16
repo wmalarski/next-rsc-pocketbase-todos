@@ -105,7 +105,7 @@ export async function signUpAction(
 
 			await pb.collection(USERS_COLLECTION).requestVerification(args.email);
 
-			return { success: true, data: {} };
+			redirect(paths.signIn);
 		},
 	});
 }

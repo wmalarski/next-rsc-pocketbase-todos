@@ -14,6 +14,7 @@ export const SignInForm = () => {
 	const [state, formAction] = useActionState(signInWithPasswordAction, {
 		success: false,
 	});
+	const errorState = state.success ? undefined : state;
 
 	const { pending } = useFormStatus();
 
@@ -26,8 +27,8 @@ export const SignInForm = () => {
 				</Card.Header>
 				<Card.Body>
 					<Stack gap="4">
-						{state?.error ? (
-							<BasicAlert icon="error" title={state.error} />
+						{errorState?.error ? (
+							<BasicAlert icon="error" title={errorState.error} />
 						) : null}
 						{state?.success ? (
 							<BasicAlert
@@ -46,8 +47,8 @@ export const SignInForm = () => {
 								placeholder="Email"
 								required
 							/>
-							{state?.errors?.email ? (
-								<BasicAlert icon="error" title={state.errors?.email} />
+							{errorState?.errors?.email ? (
+								<BasicAlert icon="error" title={errorState.errors?.email} />
 							) : null}
 						</Field.Root>
 						<Field.Root gap="1.5">
@@ -59,8 +60,8 @@ export const SignInForm = () => {
 								type="password"
 								required
 							/>
-							{state?.errors?.password ? (
-								<BasicAlert icon="error" title={state.errors.password} />
+							{errorState?.errors?.password ? (
+								<BasicAlert icon="error" title={errorState.errors.password} />
 							) : null}
 						</Field.Root>
 					</Stack>

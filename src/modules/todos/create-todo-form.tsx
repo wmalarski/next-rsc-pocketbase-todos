@@ -20,6 +20,7 @@ export const CreateTodoForm = ({
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const { pending } = useFormStatus();
+	const errorState = actionState.success ? undefined : actionState;
 
 	const action = async (form: FormData) => {
 		onCreate(form);
@@ -33,8 +34,8 @@ export const CreateTodoForm = ({
 			className={flex({ gap: 2, justifyContent: "space-between" })}
 		>
 			<Stack gap="4" flexGrow={1}>
-				{actionState?.error ? (
-					<BasicAlert icon="error" title={actionState.error} />
+				{errorState?.error ? (
+					<BasicAlert icon="error" title={errorState.error} />
 				) : null}
 				<Field.Root gap="1.5">
 					<Field.Label htmlFor="text" srOnly>
@@ -47,8 +48,8 @@ export const CreateTodoForm = ({
 						type="text"
 						required
 					/>
-					{actionState?.errors?.text ? (
-						<BasicAlert icon="error" title={actionState.errors.text} />
+					{errorState?.errors?.text ? (
+						<BasicAlert icon="error" title={errorState.errors.text} />
 					) : null}
 				</Field.Root>
 			</Stack>

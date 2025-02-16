@@ -13,6 +13,7 @@ export const ProviderSignInForm = () => {
 	const [state, formAction] = useActionState(signInWithProviderAction, {
 		success: false,
 	});
+	const errorState = state.success ? undefined : state;
 
 	const { pending } = useFormStatus();
 
@@ -26,8 +27,8 @@ export const ProviderSignInForm = () => {
 				</Card.Header>
 				<Card.Body>
 					<Stack gap="4">
-						{state?.error ? (
-							<BasicAlert icon="error" title={state.error} />
+						{errorState?.error ? (
+							<BasicAlert icon="error" title={errorState.error} />
 						) : null}
 						{state?.success ? (
 							<BasicAlert

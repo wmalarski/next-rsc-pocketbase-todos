@@ -86,6 +86,6 @@ export const handleAction = async <
 		if (error instanceof ClientResponseError) {
 			return parseClientError(error) as Result;
 		}
-		return createRequestError() as Result;
+		throw error;
 	}
 };

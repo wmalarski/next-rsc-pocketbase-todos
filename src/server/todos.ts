@@ -74,6 +74,28 @@ export async function createTodo(
 	});
 }
 
+export async function updateTodo(
+	_prevState: ActionResult,
+	formData: FormData,
+): Promise<ActionResult> {
+	return handleAction({
+		data: decode(formData),
+		schema: v.object({ text: v.string(), id: v.string() }),
+		handler: async (args) => {
+			const { pb, user } = await createAuthorizedServerClient();
+
+			await pb.collection(TODOS_COLLECTION).update(args.id, {
+				text: args.text,
+				user: user.id,
+			});
+
+			revalidatePath(paths.list());
+
+			return delayResponse({ success: true, data: {} });
+		},
+	});
+}
+
 export async function deleteTodo(
 	_prevState: ActionResult,
 	formData: FormData,
