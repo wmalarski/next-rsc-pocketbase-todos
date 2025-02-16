@@ -5,16 +5,9 @@ import { decode } from "decode-formdata";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ClientResponseError } from "pocketbase";
 import * as v from "valibot";
 import { createServerClient } from "./pocketbase";
-import {
-	type ActionResult,
-	createRequestError,
-	delayResponse,
-	parseClientError,
-	parseValibotIssues,
-} from "./utils";
+import { type ActionResult, delayResponse, handleAction } from "./utils";
 
 const TODOS_COLLECTION = "todos";
 const TODOS_PER_PAGE = 10;
@@ -63,95 +56,41 @@ export async function createTodo(
 	_prevState: ActionResult,
 	formData: FormData,
 ): Promise<ActionResult> {
-	const parsed = await v.safeParseAsync(
-		v.object({ text: v.string() }),
-		decode(formData),
-	);
+	return handleAction({
+		data: decode(formData),
+		schema: v.object({ text: v.string() }),
+		handler: async (args) => {
+			const { pb, user } = await createAuthorizedServerClient();
 
-	if (!parsed.success) {
-		return parseValibotIssues(parsed.issues);
-	}
+			await pb.collection(TODOS_COLLECTION).create({
+				text: args.text,
+				user: user.id,
+			});
 
-	const { pb, user } = await createAuthorizedServerClient();
+			revalidatePath(paths.list());
 
-	try {
-		await pb.collection(TODOS_COLLECTION).create({
-			text: parsed.output.text,
-			user: user.id,
-		});
-
-		revalidatePath(paths.list());
-
-		return delayResponse({ success: true, data: {} });
-	} catch (error) {
-		if (error instanceof ClientResponseError) {
-			return parseClientError(error);
-		}
-	}
-
-	return createRequestError();
+			return delayResponse({ success: true, data: {} });
+		},
+	});
 }
 
 export async function deleteTodo(
 	_prevState: ActionResult,
 	formData: FormData,
 ): Promise<ActionResult> {
-	const parsed = await v.safeParseAsync(
-		v.object({ id: v.string() }),
-		decode(formData),
-	);
+	return handleAction({
+		data: decode(formData),
+		schema: v.object({ id: v.string() }),
+		handler: async (args) => {
+			const { pb } = await createAuthorizedServerClient();
 
-	if (!parsed.success) {
-		return parseValibotIssues(parsed.issues);
-	}
+			await pb.collection(TODOS_COLLECTION).delete(args.id);
 
-	const { pb } = await createAuthorizedServerClient();
+			revalidatePath(paths.list());
 
-	try {
-		await pb.collection(TODOS_COLLECTION).delete(parsed.output.id);
-
-		revalidatePath(paths.list());
-
-		return delayResponse({ success: true, data: {} });
-	} catch (error) {
-		if (error instanceof ClientResponseError) {
-			return parseClientError(error);
-		}
-	}
-
-	return createRequestError();
-}
-
-export async function updateTodo(
-	_prevState: ActionResult,
-	formData: FormData,
-): Promise<ActionResult> {
-	const parsed = await v.safeParseAsync(
-		v.object({ text: v.string(), id: v.string() }),
-		decode(formData),
-	);
-
-	if (!parsed.success) {
-		return parseValibotIssues(parsed.issues);
-	}
-
-	const { pb } = await createAuthorizedServerClient();
-
-	try {
-		await pb.collection(TODOS_COLLECTION).update(parsed.output.id, {
-			text: parsed.output.text,
-		});
-
-		revalidatePath(paths.list());
-
-		return delayResponse({ success: true, data: {} });
-	} catch (error) {
-		if (error instanceof ClientResponseError) {
-			return parseClientError(error);
-		}
-	}
-
-	return createRequestError();
+			return delayResponse({ success: true, data: {} });
+		},
+	});
 }
 
 const updateIsFinishedTodoSchema = () => {
@@ -165,27 +104,19 @@ type UpdateIsFinishedTodoArgs = v.InferInput<
 export async function updateIsFinishedTodo(
 	args: UpdateIsFinishedTodoArgs,
 ): Promise<ActionResult> {
-	const parsed = await v.safeParseAsync(updateIsFinishedTodoSchema(), args);
+	return handleAction({
+		data: args,
+		schema: updateIsFinishedTodoSchema(),
+		handler: async (args) => {
+			const { pb } = await createAuthorizedServerClient();
 
-	if (!parsed.success) {
-		return parseValibotIssues(parsed.issues);
-	}
+			await pb.collection(TODOS_COLLECTION).update(args.id, {
+				isFinished: args.isFinished,
+			});
 
-	const { pb } = await createAuthorizedServerClient();
+			revalidatePath(paths.list());
 
-	try {
-		await pb.collection(TODOS_COLLECTION).update(parsed.output.id, {
-			isFinished: parsed.output.isFinished,
-		});
-
-		revalidatePath(paths.list());
-
-		return delayResponse({ success: true, data: {} });
-	} catch (error) {
-		if (error instanceof ClientResponseError) {
-			return parseClientError(error);
-		}
-	}
-
-	return createRequestError();
+			return delayResponse({ success: true, data: {} });
+		},
+	});
 }
